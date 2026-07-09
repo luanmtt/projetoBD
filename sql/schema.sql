@@ -22,7 +22,7 @@ obrigatórios, UNIQUE onde aplicável.
 CREATE TABLE pessoa(
 	id_pessoa SERIAL PRIMARY KEY,
 	nome VARCHAR(50) NOT NULL, 								-- um nome não pode ser vazio.
-	cpf VARCHAR(14) UNIQUE NOT NULL DEFAULT '000-000-000.00',						-- um cpf não pode ser vazio.
+	cpf VARCHAR(14) UNIQUE NOT NULL DEFAULT '000-000-000.00', -- um cpf não pode ser vazio.
 	data_nascimento VARCHAR(8) NOT NULL DEFAULT '00/00/00',	-- uma data de nascimento não pode ser vazia.
 	is_flamengo BOOLEAN,
 	telefone VARCHAR(15) UNIQUE NOT NULL DEFAULT '00(00)00000-0000'
@@ -74,9 +74,16 @@ CREATE TABLE residente(
 	
 );
 
--- WIP! ver se a estrutura está correta para depois implementar.
 CREATE TABLE alergias(
-
+	id_alergia SERIAL PRIMARY KEY,
+	id_pessoa INT NOT NULL,
+	tipo_alergia VARCHAR(30) NOT NULL,
+	CONSTRAINT fk_alergias
+		FOREIGN KEY (id_pessoa) 
+		REFERENCES PACIENTE(id_pessoa)
+		ON DELE CASCADE
+	CONSTRAINT uq_pessoa, uq_alergia
+		UNIQUE (id_pessoa, tipo_alergia)
 );
 
 CREATE TABLE unidade(
