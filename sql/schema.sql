@@ -16,6 +16,18 @@ obrigatórios, UNIQUE onde aplicável.
 
 */
 
+DROP TABLE IF EXISTS escala CASCADE;
+DROP TABLE IF EXISTS plantao CASCADE;
+DROP TABLE IF EXISTS procedimento_realizado CASCADE;
+DROP TABLE IF EXISTS procedimento CASCADE;
+DROP TABLE IF EXISTS atendimento CASCADE;
+DROP TABLE IF EXISTS alergia CASCADE;
+DROP TABLE IF EXISTS unidade CASCADE;
+DROP TABLE IF EXISTS residente CASCADE;
+DROP TABLE IF EXISTS preceptor CASCADE;
+DROP TABLE IF EXISTS profissional CASCADE;
+DROP TABLE IF EXISTS paciente CASCADE;
+DROP TABLE IF EXISTS pessoa CASCADE;
 
 -- CRIAÇÃO DE TABELAS
 
@@ -23,16 +35,16 @@ CREATE TABLE pessoa(
 	id_pessoa SERIAL PRIMARY KEY,
 	nome VARCHAR(50) NOT NULL, 								-- um nome não pode ser vazio.
 	cpf VARCHAR(14) UNIQUE NOT NULL DEFAULT '000-000-000.00', -- um cpf não pode ser vazio.
-	data_nascimento VARCHAR(8) NOT NULL DEFAULT '00/00/00',	-- uma data de nascimento não pode ser vazia.
+	data_nascimento VARCHAR(10) NOT NULL DEFAULT '00/00/0000',	-- uma data de nascimento não pode ser vazia.
 	is_flamengo BOOLEAN,
-	telefone VARCHAR(15) UNIQUE NOT NULL DEFAULT '00(00)00000-0000'
+	telefone VARCHAR(16) UNIQUE NOT NULL DEFAULT '00(00)00000-0000'
 );
 
 
 CREATE TABLE paciente(
 	id_paciente INTEGER PRIMARY KEY,
-	num_convenio VARCHAR(15) UNIQUE NOT NULL DEFAULT '0000.0000.0000-0',
-	grupo_sanguineo VARCHAR(2) NOT NULL,
+	num_convenio VARCHAR(20) UNIQUE NOT NULL DEFAULT 'NOMECONVENIO-00000',
+	grupo_sanguineo VARCHAR(3) NOT NULL,
 	
 	CONSTRAINT fk_paciente
 		FOREIGN KEY (id_paciente)
@@ -40,10 +52,11 @@ CREATE TABLE paciente(
 		ON DELETE CASCADE
 );
 
+
 CREATE TABLE profissional(
 	id_profissional INTEGER PRIMARY KEY,
 	crm VARCHAR(8) UNIQUE NOT NULL DEFAULT 'AA-000000',
-	data_admissao VARCHAR(8) NOT NULL DEFAULT '00/00/00',
+	data_admissao VARCHAR(10) NOT NULL DEFAULT '00/00/0000',
 	especialidade VARCHAR(20) NOT NULL,
 	
 	CONSTRAINT fk_profissional
@@ -51,6 +64,7 @@ CREATE TABLE profissional(
 		REFERENCES pessoa(id_pessoa)
 		ON DELETE CASCADE
 );
+
 
 CREATE TABLE preceptor(
 	id_preceptor INTEGER PRIMARY KEY,
@@ -74,17 +88,20 @@ CREATE TABLE residente(
 	
 );
 
-CREATE TABLE alergias(
+CREATE TABLE alergia(
 	id_alergia SERIAL PRIMARY KEY,
 	id_pessoa INT NOT NULL,
 	tipo_alergia VARCHAR(30) NOT NULL,
+
 	CONSTRAINT fk_alergias
 		FOREIGN KEY (id_pessoa) 
-		REFERENCES PACIENTE(id_pessoa)
-		ON DELE CASCADE
-	CONSTRAINT uq_pessoa, uq_alergia
+		REFERENCES pessoa(id_pessoa)
+		ON DELETE CASCADE,
+
+	CONSTRAINT uq_pessoa 
 		UNIQUE (id_pessoa, tipo_alergia)
 );
+
 
 CREATE TABLE unidade(
 	id_unidade SERIAL PRIMARY KEY NOT NULL,
@@ -92,6 +109,7 @@ CREATE TABLE unidade(
 	tipo VARCHAR(50) NOT NULL,
 	capacidade_leitos INTEGER NOT NULL CHECK (capacidade_leitos >= 0)
 );
+
 
 CREATE TABLE atendimento(
 	id_atendimento SERIAL PRIMARY KEY NOT NULL,
@@ -114,15 +132,17 @@ CREATE TABLE atendimento(
     CONSTRAINT fk_atendimento_preceptor
         FOREIGN KEY (id_preceptor)
         REFERENCES preceptor(id_preceptor)
-        ON DELETE CASCADE,
+        ON DELETE CASCADE
 );
+
 
 CREATE TABLE procedimento(
 	id_procedimento SERIAL PRIMARY KEY NOT NULL,
-	codigo VARCHAR(9) NOT NULL DEFAULT '0000-0000',
+	codigo VARCHAR(9) NOT NULL DEFAULT 'PROC-0000',
 	nome VARCHAR(50) NOT NULL,
 	tempo_medio_minutos NUMERIC(4,2) NOT NULL CHECK (tempo_medio_minutos >= 0) CHECK (tempo_medio_minutos < 1000)
 );
+
 
 CREATE TABLE procedimento_realizado(
 	id_atendimento INTEGER NOT NULL,
@@ -130,6 +150,7 @@ CREATE TABLE procedimento_realizado(
 	quantidade INTEGER NOT NULL,
 	observacao TEXT,
 	tempo_real_minutos NUMERIC(4,2) NOT NULL CHECK (tempo_real_minutos >= 0) CHECK(tempo_real_minutos < 1000),
+    faturamento_processado BOOLEAN DEFAULT FALSE,
 
 	-- pk composta
 	CONSTRAINT pk_procedimento_realizado
@@ -137,7 +158,7 @@ CREATE TABLE procedimento_realizado(
 	
 	CONSTRAINT fk_atendimento
         FOREIGN KEY (id_atendimento)
-        REFERENCES atendimento(id_procedimento)
+        REFERENCES atendimento(id_atendimento)
         ON DELETE CASCADE,
         
     CONSTRAINT fk_procedimento
@@ -145,6 +166,7 @@ CREATE TABLE procedimento_realizado(
         REFERENCES procedimento(id_procedimento)
         ON DELETE CASCADE
 );
+
 
 CREATE TABLE plantao(
 	
@@ -156,7 +178,7 @@ CREATE TABLE plantao(
 	
 	-- unique id_unidade, dia_semana, turno. tupla única, evita repetição de um turno no mesmo dia.
 	CONSTRAINT unq_plantao
-		UNIQUE(id_unidade, dia_semana, turno)
+		UNIQUE(id_unidade, dia_semana, turno),
 	
 	CONSTRAINT fk_unidade
         FOREIGN KEY (id_unidade)
@@ -169,10 +191,11 @@ CREATE TABLE plantao(
         ON DELETE CASCADE
 );
 
+
 CREATE TABLE escala(
 	id_escala SERIAL PRIMARY KEY NOT NULL,
 	id_plantao INTEGER NOT NULL,
-	id_residente INETGER NOT NULL,
+	id_residente INTEGER NOT NULL,
 	
 	--unique id_plantao, id_residente. tupla única, evita escalas repetidas.
 	CONSTRAINT unq_escala
@@ -190,22 +213,4 @@ CREATE TABLE escala(
 );
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
