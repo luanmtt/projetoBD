@@ -107,18 +107,19 @@ VALUES
 
 
 -- procedimentos realizados
-INSERT INTO procedimento_realizado (id_atendimento, id_procedimento, quantidade, tempo_real_minutos, observacao)
+INSERT INTO procedimento_realizado (id_atendimento, id_procedimento, quantidade, tempo_real_minutos,
+                                    observacao, faturamento_processado)
 VALUES
-    (10, 1, 1, 25, 'Procedimento sem intercorrências'),
-    (20, 2, 2, 40, 'Paciente colaborativo'),
-    (30, 1, 1, 18, NULL),
-    (40, 3, 1, 55, 'Necessário auxílio do preceptor'),
-    (50, 2, 1, 20, 'Realizado rapidamente'),
-    (60, 4, 3, 35, 'Repetido devido a erro inicial'),
-    (70, 1, 1, 30, NULL),
-    (80, 5, 1, 12, 'Procedimento simples'),
-    (90, 3, 2, 45, 'Leve atraso no início'),
-    (11, 2, 1, 28, NULL);
+    (10, 1, 1, 25, 'Procedimento sem intercorrências', TRUE),
+    (20, 2, 2, 40, 'Paciente colaborativo', FALSE),
+    (30, 1, 1, 18, NULL, TRUE),
+    (40, 3, 1, 55, 'Necessário auxílio do preceptor', FALSE),
+    (50, 2, 1, 20, 'Realizado rapidamente', TRUE),
+    (60, 4, 3, 35, 'Repetido devido a erro inicial', FALSE),
+    (70, 1, 1, 30, NULL, FALSE),
+    (80, 5, 1, 12, 'Procedimento simples', FALSE),
+    (90, 3, 2, 45, 'Leve atraso no início', TRUE),
+    (11, 2, 1, 28, NULL, TRUE);
 
 
 -- alergias

@@ -18,36 +18,40 @@ Em queries, temos:
 -- ─────────────────────────────────────────────────────────────────────────────────────────────────
 -- Create's: 
 
--- não foi testado! 
 -- Inserir novo atendimento, verificando existência de paciente, residente e preceptor antes de INSERT
 SELECT 
-EXISTS (SELECT 1 FROM paciente   WHERE id_pessoa = 1) AS paciente_existe,
-EXISTS (SELECT 1 FROM residente  WHERE id_profissional = 12) AS residente_existe,
-EXISTS (SELECT 1 FROM preceptor  WHERE id_profissional = 6) AS preceptor_existe;
+EXISTS (SELECT 1 FROM paciente   WHERE id_paciente = 1) AS paciente_existe,
+EXISTS (SELECT 1 FROM residente  WHERE id_residente = 12) AS residente_existe,
+EXISTS (SELECT 1 FROM preceptor  WHERE id_preceptor = 6) AS preceptor_existe;
 
 INSERT INTO atendimento (id_paciente, id_residente, id_preceptor, data_hora, duracao_minutos)
-SELECT 1, 13, 6, '2026-07-01 09:00:00', 30
-WHERE EXISTS (SELECT 1 FROM paciente WHERE id_pessoa = 1)
-AND EXISTS (SELECT 1 FROM residente WHERE id_profissional = 12)
-AND EXISTS (SELECT 1 FROM preceptor WHERE id_profissional = 6);
+SELECT 1, 12, 6, '2026-07-01 09:00:00', 30
+WHERE EXISTS (SELECT 1 FROM paciente WHERE id_paciente = 1)
+AND EXISTS (SELECT 1 FROM residente WHERE id_residente = 12)
+AND EXISTS (SELECT 1 FROM preceptor WHERE id_preceptor = 6);
+
+-- Teste para verificar inserção
+
+SELECT *
+FROM atendimento a
+WHERE id_paciente = 1;
 
 
 -- ──────────────────────────────────────────────────────────────────────────────────────────────────
 -- Read's:
 
 -- Listar todos os atendimentos de um paciente específico (ordenar por data)
-SELECT * 
+SELECT a.id_atendimento, a.id_paciente, a.id_residente, a.id_preceptor, a.data_hora, a.duracao_minutos 
 FROM atendimento a
 JOIN paciente pc ON a.id_paciente = pc.id_paciente
 JOIN pessoa p ON pc.id_paciente = p.id_pessoa
-WHERE pc.nome LIKE 'Akemi Almirante' 
+WHERE p.nome LIKE 'Akemi Almirante' 
 -- listar todos os atendimentos de Akemi
-
 ORDER BY data_hora DESC;
 
 
 -- Listar os procedimentos realizados em um atendimento
-SELECT proc.nome, pr.tempo_real, pr.quantidade
+SELECT proc.nome, pr.tempo_real_minutos, pr.quantidade
 FROM procedimento proc
 JOIN procedimento_realizado pr ON proc.id_procedimento = pr.id_procedimento
 JOIN atendimento a ON a.id_atendimento = pr.id_atendimento
@@ -70,16 +74,24 @@ ORDER BY media_duracao_minutos DESC;
 
 -- Atualizar os dados de um paciente (num_convenio ou alergias)
 UPDATE paciente 
-SET num_convenio = 'BRADESCO-99120' AND grupo_sanguineo = 'A+'
+SET num_convenio = 'BRADESCO-99120', grupo_sanguineo = 'A+'
 WHERE id_paciente = 5;
 
--- fazer o de alergia
+-- Teste para verificar atualização
+SELECT pa.num_convenio, pa.grupo_sanguineo
+FROM paciente pa
+WHERE pa.id_paciente = 5;
 
 -- ─────────────────────────────────────────────────────────────────────────────────────────────────
 -- Delete's:
 
 -- Remover um procedimento realizado (apenas se ainda não houver faturamento associado)
+DELETE FROM procedimento_realizado
+WHERE id_atendimento = 20 AND id_procedimento = 2 AND faturamento_processado = FALSE;
 
-
+-- Teste para verificar remoção
+SELECT pr.id_atendimento, pr.id_procedimento, pr.quantidade
+FROM procedimento_realizado pr 
+WHERE pr.id_atendimento = 20 AND pr.id_procedimento = 2;
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
