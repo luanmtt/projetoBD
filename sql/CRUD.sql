@@ -1,20 +1,84 @@
--- Inserir novo atendimento
+/*
+
+CRUD.sql:
+
+Create - Read - Update - Delete. Esse arquivo contêm as operações
+de criação de 'entidades' (Create), busca de alguns casos (Read),
+atualização de dados (Update) e deleção de tuplas e relações.
+
+
+Em queries, temos:
+> Listar todos os atendimentos de um paciente específico (ordenados por data)
+> Listar os procedimentos realizados em um atendimento (com nome do procedimento, quantidade e tempo real)
+> Calcular o tempo médio de duração dos atendimentos por residente
+
+
+*/
+
+-- ─────────────────────────────────────────────────────────────────────────────────────────────────
+-- Create's: 
+
+-- Inserir novo atendimento, verificando existência de paciente, residente e preceptor antes de INSERT
+SELECT 
+EXISTS (SELECT 1 FROM paciente   WHERE id_pessoa = 1) AS paciente_existe,
+EXISTS (SELECT 1 FROM residente  WHERE id_profissional = 12) AS residente_existe,
+EXISTS (SELECT 1 FROM preceptor  WHERE id_profissional = 6) AS preceptor_existe;
+
+INSERT INTO atendimento (id_paciente, id_residente, id_preceptor, data_hora, duracao_minutos)
+SELECT 1, 13, 6, '2026-07-01 09:00:00', 30
+WHERE EXISTS (SELECT 1 FROM paciente WHERE id_pessoa = 1)
+AND EXISTS (SELECT 1 FROM residente WHERE id_profissional = 12)
+AND EXISTS (SELECT 1 FROM preceptor WHERE id_profissional = 6);
+
+
+-- ──────────────────────────────────────────────────────────────────────────────────────────────────
+-- Read's:
 
 -- Listar todos os atendimentos de um paciente específico (ordenar por data)
-SELECT *
-FROM atendimento
-WHERE id_paciente = 3 --Listar todos os atendimentos de Akemi
-ORDER BY data_hora
+SELECT * 
+FROM atendimentos a
+JOIN paciente pc ON a.id_paciente = pc.id_paciente
+WHERE pc.nome LIKE 'Akemi Almirante' 
+-- listar todos os atendimentos de Akemi
+
+ORDER BY data_hora DESC;
+
 
 -- Listar os procedimentos realizados em um atendimento
-SELECT p.nome, pr.tempo_real, pr.quantidade
-FROM procedimento p
+SELECT pr.nome, pr.tempo_real, pr.quantidade
+FROM procedimento proc
 JOIN procedimento_realizado pr ON p.id_procedimento = pr.id_procedimento
 JOIN atendimento a ON a.id_atendimento = pr.id_atendimento
-WHERE a.id_atendimento = 10
+WHERE a.id_atendimento = 10;
+-- assume-se um atendimento aleatório para teste
 
--- Atualizar os dados de um paciente
+
+-- Calcular o tempo médio de duração dos atendimentos por residente
+SELECT pe.nome AS nome_residente, AVG(a.duracao_minutos) AS media_duracao_minutos
+FROM atendimento a
+JOIN residente r ON r.id_profissional = a.id_residente
+JOIN profissional prof ON prof.id_pessoa = r.id_profissional
+JOIN pessoa pe ON pe.id_pessoa = prof.id_pessoa
+GROUP BY pe.id_pessoa, pe.nome
+ORDER BY media_duracao_minutos DESC;
+
+-- ─────────────────────────────────────────────────────────────────────────────────────────────────
+-- Update's: 
+
+-- Atualizar os dados de um paciente (num_convenio ou alergias)
+UPDATE paciente 
+SET num_convenio = 'BRADESCO-99120'
+WHERE id_pessoa = 5
+
+UPDATE paciente 
+SET grupo_sanguineo = 'A+'
+WHERE id_pessoa = 5
+
+-- ─────────────────────────────────────────────────────────────────────────────────────────────────
+-- Delete's:
 
 -- Remover um procedimento realizado
 
--- Calcular o tempo médio de duração dos atendimentos por residente
+
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
