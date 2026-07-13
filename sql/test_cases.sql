@@ -72,7 +72,7 @@ VALUES
     (15, 2);
 
 
--- unidades 
+-- unidades
 INSERT INTO unidade(id_unidade, nome, tipo, capacidade_leitos)
 VALUES
 	(1, 'Trauminha','Emergência Ortotraumatológica',55),
@@ -95,15 +95,20 @@ VALUES
     (90, 4, 14, 8, '2026-06-05 10:30:00', 50),
     (11, 5, 15, 6, '2026-06-05 16:00:00', 30);
 
+INSERT INTO nivel_risco(id_nivel_risco, nivel)
+VALUES
+	(1,'BAIXO'),
+	(2, 'MEDIO'),
+	(3, 'ALTO');
 
 -- procedimentos
-INSERT INTO procedimento(id_procedimento, codigo, nome, tempo_medio_minutos)
+INSERT INTO procedimento(id_procedimento, codigo, nome, tempo_medio_minutos, id_nivel_risco)
 VALUES
-    (1, 'PROC-0001', 'Curativo Simples', 20.00),
-    (2, 'PROC-0002', 'Sutura', 35.00),
-    (3, 'PROC-0003', 'Drenagem', 45.00),
-    (4, 'PROC-0004', 'Redução de Fratura', 60.00),
-    (5, 'PROC-0005', 'Punção', 15.00);
+    (1, 'PROC-0001', 'Curativo Simples', 20.00, 1),
+    (2, 'PROC-0002', 'Sutura', 35.00, 2),
+    (3, 'PROC-0003', 'Drenagem', 45.00, 3),
+    (4, 'PROC-0004', 'Redução de Fratura', 60.00, 2),
+    (5, 'PROC-0005', 'Punção', 15.00, 2);
 
 
 -- procedimentos realizados
