@@ -49,6 +49,9 @@ WHERE p.nome LIKE 'Akemi Almirante'
 -- listar todos os atendimentos de Akemi
 ORDER BY data_hora DESC;
 
+SELECT * FROM preceptor pr
+WHERE pr.id_preceptor = 6;
+
 
 -- Listar os procedimentos realizados em um atendimento
 SELECT proc.nome, pr.tempo_real_minutos, pr.quantidade
@@ -72,14 +75,15 @@ ORDER BY media_duracao_minutos DESC;
 -- ─────────────────────────────────────────────────────────────────────────────────────────────────
 -- Update's: 
 
--- Atualizar os dados de um paciente (num_convenio ou alergias)
+-- Atualizar os dados de um paciente (num_convenio ou endereco)
 UPDATE paciente 
 SET num_convenio = 'BRADESCO-99120', grupo_sanguineo = 'A+'
 WHERE id_paciente = 5;
 
 -- Teste para verificar atualização
-SELECT pa.num_convenio, pa.grupo_sanguineo
-FROM paciente pa
+SELECT paciente pa
+JOIN pessoa ON p.id_pessoa = pa.id_paciente
+SET endereco = 'Vila Sésamo'
 WHERE pa.id_paciente = 5;
 
 -- ─────────────────────────────────────────────────────────────────────────────────────────────────

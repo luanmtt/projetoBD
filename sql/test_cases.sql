@@ -8,23 +8,23 @@ no projeto, serão adicionados 5 pacientes, 5 residentes, 5 preceptores, 3 unida
 */
 
 -- add Pessoas
-INSERT INTO pessoa(id_pessoa, nome, cpf, data_nascimento, is_flamengo, telefone )
+INSERT INTO pessoa(id_pessoa, nome, cpf, data_nascimento, is_flamengo, telefone, endereco)
 VALUES
-	(1, 'Luan Motta', '210.113.954-60', '01/10/1944', FALSE, '55(81)95509-5100'),
-    (2, 'Lucas Schettini', '196.685.636-70', '27/05/1928', TRUE, '55(71)93284-2315'),
-    (3, 'Akemi Almirante', '742.807.130-58', '10/04/1952', FALSE, '55(11)91853-9648'),
-    (4, 'Andrei Maia', '852.159.098-30', '20/12/1953', TRUE, '55(71)93522-5986'),
-    (5, 'Marlon Neto', '837.851.729-77', '26/08/2016', TRUE, '55(51)97295-3461'),
-    (6, 'Marcelo Iury', '400.878.351-11', '16/09/2022', TRUE, '55(71)95858-7524'),
-    (7, 'Neymar Jr', '461.301.397-10', '03/04/1996', FALSE, '55(41)95727-5013'),
-    (8, 'Michael Scott', '634.706.010-18', '12/01/1973', TRUE, '55(85)96173-5506'),
-    (9, 'Clark Kent', '826.526.064-04', '02/11/1943', TRUE, '55(91)97894-7684'),
-    (10, 'Bob Jackson', '156.786.184-88', '12/12/1980', FALSE, '55(41)94083-6938'),
-    (11, 'Alice Kennedy', '130.776.889-76', '09/11/1929', TRUE, '55(51)98561-9000'),
-	(12, 'Drauzio Varella', '085.784.728-33', '09/11/2011', FALSE, '55(85)92621-7758'),
-    (13, 'Oswaldo Cruz', '491.691.164-83', '03/05/1929', FALSE, '55(85)97973-7039'),
-    (14, 'Antônio de Salles', '981.246.846-10', '14/01/1992', FALSE, '55(71)93021-1378'),
-    (15, 'Angelita Habr-Gama ', '937.898.585-55', '24/11/2023', FALSE, '55(71)93537-1108');
+	(1, 'Luan Motta', '210.113.954-60', '01/10/1944', FALSE, '55(81)95509-5100', 'Rua da Mãe Joana, 404'),
+    (2, 'Lucas Schettini', '196.685.636-70', '27/05/1928', TRUE, '55(71)93284-2315', 'Rua dos Bobos, 0'),
+    (3, 'Akemi Almirante', '742.807.130-58', '10/04/1952', FALSE, '55(11)91853-9648', 'Manaíra'),
+    (4, 'Andrei Maia', '852.159.098-30', '20/12/1953', TRUE, '55(71)93522-5986', 'Aguiar'),
+    (5, 'Marlon Neto', '837.851.729-77', '26/08/2016', TRUE, '55(51)97295-3461', 'Campina Grande'),
+    (6, 'Marcelo Iury', '400.878.351-11', '16/09/2022', TRUE, '55(71)95858-7524', 'Perto do Déde'),
+    (7, 'Neymar Jr', '461.301.397-10', '03/04/1996', FALSE, '55(41)95727-5013', 'Paris'),
+    (8, 'Michael Scott', '634.706.010-18', '12/01/1973', TRUE, '55(85)96173-5506', 'Scranton'),
+    (9, 'Clark Kent', '826.526.064-04', '02/11/1943', TRUE, '55(91)97894-7684', 'Gotham City'),
+    (10, 'Bob Jackson', '156.786.184-88', '12/12/1980', FALSE, '55(41)94083-6938', 'Dalescott'),
+    (11, 'Alice Kennedy', '130.776.889-76', '09/11/1929', TRUE, '55(51)98561-9000', 'Scottsdale'),
+	(12, 'Drauzio Varella', '085.784.728-33', '09/11/2011', FALSE, '55(85)92621-7758', 'Rio de Janeiro'),
+    (13, 'Oswaldo Cruz', '491.691.164-83', '03/05/1929', FALSE, '55(85)97973-7039', 'RJ'),
+    (14, 'Antônio de Salles', '981.246.846-10', '14/01/1992', FALSE, '55(71)93021-1378', 'Casa Tão Engraçada'),
+    (15, 'Angelita Habr-Gama ', '937.898.585-55', '24/11/2023', FALSE, '55(71)93537-1108', 'Caixão');
 
 
 -- especialização de Pacientes

@@ -32,7 +32,8 @@ CREATE TABLE pessoa(
 	cpf VARCHAR(14) UNIQUE NOT NULL DEFAULT '000-000-000.00', -- um cpf não pode ser vazio.
 	data_nascimento VARCHAR(10) NOT NULL DEFAULT '00/00/0000',	-- uma data de nascimento não pode ser vazia.
 	is_flamengo BOOLEAN,
-	telefone VARCHAR(16) UNIQUE NOT NULL DEFAULT '00(00)00000-0000'
+	telefone VARCHAR(16) UNIQUE NOT NULL DEFAULT '00(00)00000-0000',
+    endereco VARCHAR(50) NOT NULL
 );
 
 
