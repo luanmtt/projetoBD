@@ -142,6 +142,8 @@ CREATE TABLE procedimento(
 	codigo VARCHAR(9) NOT NULL DEFAULT 'PROC-0000',
 	nome VARCHAR(50) NOT NULL,
 	tempo_medio_minutos NUMERIC(4,2) NOT NULL CHECK (tempo_medio_minutos >= 0) CHECK (tempo_medio_minutos < 1000),
+    media_tempo_procedimento NUMERIC(4,2) NOT NULL CHECK (media_tempo_procedimento >= 0) CHECK (media_tempo__procedimento < 1000),
+
 
 	CONSTRAINT fk_nivel_risco
         FOREIGN KEY (id_nivel_risco)
@@ -214,6 +216,20 @@ CREATE TABLE escala(
     CONSTRAINT fk_residente
         FOREIGN KEY (id_residente)
         REFERENCES residente(id_residente)
+        ON DELETE CASCADE
+);
+
+
+CREATE TABLE internacao (
+    id_internacao SERIAL PRIMARY KEY,
+    id_paciente INTEGER NOT NULL,
+    data_hora_entrada TIMESTAMP NOT NULL,
+    data_hora_saida TIMESTAMP NULL,   -- NULL = ainda internado
+
+
+    CONSTRAINT fk_paciente
+        FOREIGN KEY (id_paciente)
+        REFERENCES paciente(id_paciente) 
         ON DELETE CASCADE
 );
 
