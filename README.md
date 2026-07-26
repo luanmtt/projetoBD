@@ -178,5 +178,10 @@ projetoBD
 │   ├── analytics.sql          # Consultas analíticas (rankings, agregações, estatísticas)
 │   └── test_cases.sql         # Dados de teste para popular o banco (pessoas, atendimentos, procedimentos, etc.)
 │
+├── orm/
+│   ├── database.py            # Configuração de conexão com o banco via SQLAlchemy (engine, session)
+│   └── models.py              # Mapeamento objeto-relacional: classes Python ↔ tabelas do banco
+│
+├── .gitignore                 # Arquivos e diretórios ignorados pelo Git
 └── README.md                  # o que estás lendo!
 ```
