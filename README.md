@@ -176,6 +176,7 @@ projetoBD
 │   ├── schema.sql             # Definição do esquema do banco de dados (CREATE TABLEs, constraints, chaves)
 │   ├── CRUD.sql               # Operações de Create, Read, Update e Delete sobre as tabelas
 │   ├── analytics.sql          # Consultas analíticas (rankings, agregações, estatísticas)
+│   ├── views.sql              # Criação de Views (rankings procedimento, atendimentos, residentes) 
 │   └── test_cases.sql         # Dados de teste para popular o banco (pessoas, atendimentos, procedimentos, etc.)
 │
 ├── orm/
