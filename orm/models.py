@@ -1,11 +1,12 @@
 from datetime import date, datetime
-from typing import Optional, List
+from typing import Optional, List, Any, Dict
  
 from sqlalchemy import (
     ForeignKey, String, Integer, Boolean, Date, DateTime, CheckConstraint,
     UniqueConstraint, Text, Numeric,
 )
 
+from sqlalchemy import JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database import Base
 
@@ -175,12 +176,12 @@ class Procedimento(Base):
 class ProcedimentoRealizado(Base):
     __tablename__ = "procedimento_realizado"
     
-    id_procedimento:Mapped[int] = mapped_column(ForeignKey("procedimento.id_procedimento"),
-                                                ondelete="CASCADE",
+    id_procedimento:Mapped[int] = mapped_column(ForeignKey("procedimento.id_procedimento",
+                                                ondelete="CASCADE"),
                                                 primary_key=True)
 
-    id_atendimento:Mapped[int] = mapped_column( ForeignKey("atendimento.id_atendimento"),
-                                                ondelete="CASCADE",
+    id_atendimento:Mapped[int] = mapped_column(ForeignKey("atendimento.id_atendimento",
+                                                ondelete="CASCADE"),
                                                 primary_key=True)
 
     quantidade: Mapped[int] = mapped_column(Integer, nullable=False)
@@ -233,6 +234,18 @@ class Internacao(Base):
 
     paciente: Mapped["Paciente"] = relationship(back_populates="internacoes")
 
+class Auditoria_atendimento(Base):
+    __tablename__ = "auditoria_atendimento"
+
+    id_auditoria: Mapped[int] = mapped_column(primary_key=True)
+    id_atendimento: Mapped[int] = mapped_column(ForeignKey("atendimento.id_atendimento", ondelete="CASCADE"), nullable=False)
+    data_hora: Mapped[date] = mapped_column(DateTime, nullable=False)
+    operacao: Mapped[str] = mapped_column(String(10), 
+                                          CheckConstraint("operacao IN (INSERT, UPDATE, DELETE)"),
+                                          nullable=False)
+    usuario: Mapped[str] = mapped_column(String(50), nullable=False)
+    dados_novos: Mapped[Dict[str, Any]] = mapped_column(JSON)
+    dados_antigos: Mapped[Dict[str, Any]] = mapped_column(JSON)
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
