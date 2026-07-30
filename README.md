@@ -18,15 +18,7 @@ O projeto é dividido em duas etapas:
 5. Uso de ORM (SQLAlchemy, Prisma, Hibernate, Entity Framework, ou similar)
 6. Controle de transações e integridade referencial
 
-## Scripts SQL
-
-* **`schema.sql`**: Script de DDL (Data Definition Language). Responsável por criar todas as tabelas, definindo tipagens, chaves primárias (PK), chaves estrangeiras (FK) e restrições de integridade (CHECK, NOT NULL, UNIQUE). A estrutura segue o modelo lógico desenvolvido a partir da normalização até a 3FN.
-* **`test_cases.sql`**: Script de inserção de dados. Popula o banco com a carga inicial de testes exigida, incluindo pacientes, profissionais, unidades, atendimentos e procedimentos.
-* **`CRUD.sql`**: Contém operações de Create, Read, Update e Delete. Inclui desde inserções seguras (verificando a existência prévia das entidades) até cálculos de tempo médio e atualizações de registros de pacientes.
-* **`analytics.sql`**: Reúne consultas analíticas complexas. Realiza o rankeamento de residentes, filtragem de plantões por unidade, contagem de supervisões por preceptor e identificação de pacientes sem procedimentos de alto risco.
-
 ---
-
 ## Instalação e Execução
 
 ### 1. Windows
@@ -177,6 +169,7 @@ projetoBD
 │   ├── CRUD.sql               # Operações de Create, Read, Update e Delete sobre as tabelas
 │   ├── analytics.sql          # Consultas analíticas (rankings, agregações, estatísticas)
 │   ├── views.sql              # Criação de Views (rankings procedimento, atendimentos, residentes) 
+│   ├── triggers.sql           # Criação de triggers para auditoria, checagem de regra de negócio e estatísticas
 │   └── test_cases.sql         # Dados de teste para popular o banco (pessoas, atendimentos, procedimentos, etc.)
 │
 ├── orm/
