@@ -10,6 +10,7 @@ O arquivo de modelagem está na root do projeto como Modelagem.pdf.
 
 */
 
+drop table if exists auditoria_atendimento cascade;
 DROP TABLE IF EXISTS escala CASCADE;
 DROP TABLE IF EXISTS plantao CASCADE;
 DROP TABLE IF EXISTS internacao CASCADE;

@@ -82,18 +82,18 @@ VALUES
 
 
 -- atendimentos
-INSERT INTO atendimento (id_atendimento, id_paciente, id_residente, id_preceptor, data_hora, duracao_minutos)
+INSERT INTO atendimento (id_atendimento, id_paciente, id_residente, id_preceptor, id_unidade, data_hora, duracao_minutos)
 VALUES
-    (10, 1, 11, 6, '2026-06-01 08:30:00', 30),
-    (20, 2, 12, 6, '2026-06-01 09:15:00', 45),
-    (30, 3, 15, 7, '2026-06-02 10:00:00', 20),
-    (40, 4, 11, 7, '2026-06-02 11:30:00', 60),
-    (50, 5, 13, 8, '2026-06-03 08:00:00', 25),
-    (60, 1, 14, 6, '2026-06-03 14:20:00', 40),
-    (70, 2, 12, 8, '2026-06-04 09:45:00', 35),
-    (80, 3, 11, 7, '2026-06-04 13:10:00', 15),
-    (90, 4, 14, 8, '2026-06-05 10:30:00', 50),
-    (11, 5, 15, 6, '2026-06-05 16:00:00', 30);
+    (10, 1, 11, 6, 1, '2026-06-01 08:30:00', 30),
+    (20, 2, 12, 6, 2, '2026-06-01 09:15:00', 45),
+    (30, 3, 15, 7, 1, '2026-06-02 10:00:00', 20),
+    (40, 4, 11, 7, 3, '2026-06-02 11:30:00', 60),
+    (50, 5, 13, 8, 2, '2026-06-03 08:00:00', 25),
+    (60, 1, 14, 6, 2, '2026-06-03 14:20:00', 40),
+    (70, 2, 12, 8, 3, '2026-06-04 09:45:00', 35),
+    (80, 3, 11, 7, 1, '2026-06-04 13:10:00', 15),
+    (90, 4, 14, 8, 3, '2026-06-05 10:30:00', 50),
+    (11, 5, 15, 6, 1, '2026-06-05 16:00:00', 30);
 
 INSERT INTO nivel_risco(id_nivel_risco, nivel)
 VALUES
@@ -102,7 +102,7 @@ VALUES
 	(3, 'ALTO');
 
 -- procedimentos
-INSERT INTO procedimento(id_procedimento, codigo, nome, tempo_medio_minutos, id_nivel_risco)
+INSERT INTO procedimento(id_procedimento, codigo, nome, media_tempo_procedimento, id_nivel_risco)
 VALUES
     (1, 'PROC-0001', 'Curativo Simples', 20.00, 1),
     (2, 'PROC-0002', 'Sutura', 35.00, 2),
