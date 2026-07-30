@@ -29,7 +29,7 @@ def inserir_atendimento(session: Session, id_paciente, id_residente, id_precepto
 # READ
 # ==========================================
 
-def list_atendimento(session : Session, nome_paciente : str):
+def list_atend(session : Session, nome_paciente : str):
     #Listar todos os atendimentos de um paciente específico por nome (ordenados por data decrescente)
     stmt = (
         select(Atendimento)
