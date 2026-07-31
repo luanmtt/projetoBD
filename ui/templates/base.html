@@ -53,10 +53,10 @@
             <!-- ── Links de navegação ── -->
             <ul class="navbar__links">
                 <li><a href="{{ url_for('home.index') }}" class="navbar__link">Início</a></li>
-                <li><a href="#" class="navbar__link">Pacientes</a></li>
-                <li><a href="#" class="navbar__link">Profissionais</a></li>
-                <li><a href="#" class="navbar__link">Atendimentos</a></li>
-                <li><a href="#" class="navbar__link">Plantões</a></li>
+                <li><a href="{{ url_for('pacientes.index') }}" class="navbar__link">Pacientes</a></li>
+                <li><a href="{{ url_for('profissionais.index') }}" class="navbar__link">Profissionais</a></li>
+                <li><a href="{{ url_for('atendimentos.index') }}" class="navbar__link">Atendimentos</a></li>
+                <li><a href="{{ url_for('plantoes.index') }}" class="navbar__link">Plantões</a></li>
             </ul>
         </div>
     </nav>

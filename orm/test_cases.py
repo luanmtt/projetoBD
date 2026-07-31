@@ -8,6 +8,7 @@ from models import (
 )
 
 def popular_banco():
+    Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     
     with SessionLocal() as session:

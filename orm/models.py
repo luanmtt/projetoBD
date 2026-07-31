@@ -35,6 +35,8 @@ class Pessoa(Base):
 
     tipo_pessoa:    Mapped[str] = mapped_column(String(20))  # discriminador
  
+    alergias:       Mapped[List["Alergia"]] = relationship(back_populates="pessoa")
+
     __mapper_args__ = {
         "polymorphic_identity": "pessoa",
         "polymorphic_on": "tipo_pessoa",
@@ -50,7 +52,6 @@ class Paciente(Pessoa):
                                                 default="NOMECONVENIO-00000"
                                                 )
 
-    alergias:       Mapped[List["Alergia"]] = relationship(back_populates="pessoa")
     atendimentos:   Mapped[List["Atendimento"]] = relationship(back_populates="paciente")
     internacoes:    Mapped[List["Internacao"]] = relationship(back_populates="paciente")
  
@@ -67,14 +68,8 @@ class Profissional(Pessoa):
                                                 default="AA-000000")
     data_admissao:  Mapped[date] = mapped_column(Date, nullable=False,
                                                  default="00/00/0000")
- 
 
-    papel_profissional: Mapped[str] = mapped_column(String(20))  # discriminador
-
-    __mapper_args__ = {
-        "polymorphic_identity": "profissional",
-        "polymorphic_on": "papel_profissional",
-    }
+    __mapper_args__ = {"polymorphic_abstract": True}
 
 
 class Preceptor(Profissional):
@@ -82,15 +77,15 @@ class Preceptor(Profissional):
  
     id_preceptor:   Mapped[int] = mapped_column(ForeignKey("profissional.id_profissional", ondelete="CASCADE"), primary_key=True)
     titulacao:      Mapped[str] = mapped_column(String(20), nullable=False)
-    escalas:        Mapped[List["Escala"]] = relationship(back_populates="preceptor")
- 
+    plantoes:       Mapped[List["Plantao"]] = relationship(back_populates="preceptor")
+  
     atendimentos_supervisionados: Mapped[List["Atendimento"]] = relationship(
         back_populates="preceptor"
     )
 
     __mapper_args__ = {"polymorphic_identity": "preceptor"}
- 
- 
+
+
 class Residente(Profissional):
     __tablename__ = "residente"
  
@@ -141,6 +136,10 @@ class Atendimento(Base):
                                                   nullable=False,
                                                  )
     
+    paciente: Mapped["Paciente"] = relationship(back_populates="atendimentos")
+    residente: Mapped["Residente"] = relationship(back_populates="atendimentos_realizados")
+    preceptor: Mapped["Preceptor"] = relationship(back_populates="atendimentos_supervisionados")
+
     procedimentos_realizados: Mapped[List["ProcedimentoRealizado"]] = relationship(back_populates="atendimento")
 
 
@@ -186,7 +185,7 @@ class ProcedimentoRealizado(Base):
                                                 primary_key=True)
 
     quantidade: Mapped[int] = mapped_column(Integer, nullable=False)
-    observacao: Mapped[str] = mapped_column(Text)
+    observacao: Mapped[Optional[str]] = mapped_column(Text)
 
     data_hora_inicio: Mapped[date] = mapped_column(
             DateTime,
@@ -214,6 +213,10 @@ class Plantao(Base):
     dia_semana: Mapped[date] = mapped_column(Date, nullable=False)
     turno: Mapped[str] = mapped_column(String(10), nullable=False)
 
+    preceptor: Mapped["Preceptor"] = relationship(back_populates="plantoes")
+    unidade: Mapped["Unidade"] = relationship()
+    escalas: Mapped[List["Escala"]] = relationship(back_populates="plantao")
+
     __table_args__ = (
         CheckConstraint("turno IN ('manhã', 'tarde', 'noite')"),
         UniqueConstraint("id_unidade", "dia_semana", "turno", name="unq_plantao"),
@@ -225,6 +228,9 @@ class Escala(Base):
     id_escala: Mapped[int] = mapped_column(primary_key=True)
     id_plantao: Mapped[int] = mapped_column(ForeignKey("plantao.id_plantao", ondelete="CASCADE"), nullable=False)
     id_residente: Mapped[int] = mapped_column(ForeignKey("residente.id_residente", ondelete="CASCADE"), nullable=False)
+
+    plantao: Mapped["Plantao"] = relationship(back_populates="escalas")
+    residente: Mapped["Residente"] = relationship(back_populates="escalas")
 
     __table_args__ = (
         UniqueConstraint("id_plantao", "id_residente", name="unq_escala"),
@@ -248,7 +254,7 @@ class Auditoria_atendimento(Base):
     id_atendimento: Mapped[int] = mapped_column(ForeignKey("atendimento.id_atendimento", ondelete="CASCADE"), nullable=False)
     data_hora: Mapped[date] = mapped_column(DateTime, nullable=False)
     operacao: Mapped[str] = mapped_column(String(10), 
-                                          CheckConstraint("operacao IN (INSERT, UPDATE, DELETE)"),
+                                           CheckConstraint("operacao IN ('INSERT', 'UPDATE', 'DELETE')"),
                                           nullable=False)
     usuario: Mapped[str] = mapped_column(String(50), nullable=False)
     dados_novos: Mapped[Dict[str, Any]] = mapped_column(JSON)

@@ -2,9 +2,12 @@ from sqlalchemy.orm import Session, selectinload
 from sqlalchemy import select, func, case
 from models import Preceptor, Atendimento, Paciente, ProcedimentoRealizado, Procedimento, Pessoa, Residente, NivelRisco
 
-## Preceptores que atenderam pacientes flamenguistas 
- 
-def listar_preceptores_is_flamenguo(session: Session):
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+# Preceptores que atenderam pacientes flamenguistas 
+def listar_preceptores_is_flamengo(session: Session):
     stmt = (
         select(Preceptor)
         .join(Atendimento, Preceptor.id_preceptor == Atendimento.id_preceptor)
@@ -14,8 +17,9 @@ def listar_preceptores_is_flamenguo(session: Session):
     )
     return session.scalars(stmt).all()
 
-## Exibir o ultimo atendimento de cada paciente
 
+
+# Exibir o ultimo atendimento de cada paciente
 def listar_ultimo_atendimento(session: Session):
 
     subq = (
@@ -43,27 +47,30 @@ def listar_ultimo_atendimento(session: Session):
     )
     return session.scalars(stmt).all()
     
-# Calcular o percentual de procedimentos de alto risco realizados por cada residente
 
+# Calcular o percentual de procedimentos de alto risco realizados por cada residente
 def percentual_alto_risco_por_residente(session: Session):
+
     condicao_alto_risco = case((NivelRisco.nivel == 'ALTO', 1), else_=0)
 
     stmt = (
         select(
             Residente.id_residente,
-            Pessoa.nome.label("nome_residente"),
+            Residente.nome.label("nome_residente"),
             func.count(ProcedimentoRealizado.id_procedimento).label("total"),
             (
                 func.sum(condicao_alto_risco) * 100.0 / 
                 func.count(ProcedimentoRealizado.id_procedimento)
             ).label("percentual_alto_risco")
         )
-        .join(Pessoa, Residente.id_residente == Pessoa.id_pessoa)
         .join(Atendimento, Residente.id_residente == Atendimento.id_residente)
         .join(ProcedimentoRealizado, Atendimento.id_atendimento == ProcedimentoRealizado.id_atendimento)
         .join(Procedimento, ProcedimentoRealizado.id_procedimento == Procedimento.id_procedimento)
         .join(NivelRisco, Procedimento.id_nivel_risco == NivelRisco.id_nivel_risco)
-        .group_by(Residente.id_residente, Pessoa.nome)
+        .group_by(Residente.id_residente, Residente.nome)
     )
     
     return session.execute(stmt).all()
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

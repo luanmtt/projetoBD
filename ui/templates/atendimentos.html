@@ -1,0 +1,110 @@
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ATENDIMENTOS.HTML — LISTAGEM DE ATENDIMENTOS
+
+     Herda de base.html.
+     Exibe título, caixas de info (total + último log) e tabela de dados.
+     Cada linha pode expandir pra mostrar procedimentos realizados.
+-->
+
+
+{% extends "base.html" %}
+{% block title %}Atendimentos — HospitalBD{% endblock %}
+{% block content %}
+
+    <!-- ── Cabeçalho: título + caixas de info + legenda ── -->
+
+    <div class="page-header">
+        <h1 class="page-header__title">Atendimentos</h1>
+
+        <div class="page-header__info">
+
+            <!-- ── Legenda ── -->
+            <span class="expand-legend">Clique o botão <strong>+</strong> para ver os procedimentos</span>
+
+            <!-- ── Total cadastrados ── -->
+            <div class="info-box">
+                <div class="info-box__label">Realizados</div>
+                <div class="info-box__value">{{ total }}</div>
+            </div>
+
+            <!-- ── Último log ── -->
+            <div class="info-box info-box--log">
+                <div class="info-box__label">Último log</div>
+                {% if ultimo_log %}
+                    <select class="info-box__dropdown">
+                        <option>{{ ultimo_log.data_hora.strftime('%d/%m/%Y %H:%M') }} — {{ ultimo_log.operacao }} por {{ ultimo_log.usuario }}</option>
+                    </select>
+                {% else %}
+                    <div class="info-box__empty">Nenhum log disponível</div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── Tabela de dados ── -->
+
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Paciente</th>
+                    <th>Residente</th>
+                    <th>Preceptor</th>
+                    <th>Data/Hora</th>
+                    <th>Duração (min)</th>
+                    <th style="width: 40px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in atendimentos %}
+                <tr class="data-row">
+                    <td>{{ a.id_atendimento }}</td>
+                    <td>{{ a.nome_paciente }}</td>
+                    <td>{{ a.nome_residente }}</td>
+                    <td>{{ a.nome_preceptor }}</td>
+                    <td>{{ a.data_hora.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>{{ a.duracao_minutos }}</td>
+                    <td><button class="expand-btn" onclick="toggleDetail(this)">+</button></td>
+                </tr>
+                <tr class="detail-row">
+                    <td colspan="7">
+                        <div class="detail-cell">
+                            <div class="detail-cell__title">Procedimentos realizados</div>
+                            {% if a.procedimentos %}
+                            <table class="detail-table">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Nome</th>
+                                        <th>Qtd</th>
+                                        <th>Tempo real (min)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for p in a.procedimentos %}
+                                    <tr>
+                                        <td>{{ p.proc_codigo }}</td>
+                                        <td>{{ p.proc_nome }}</td>
+                                        <td>{{ p.quantidade }}</td>
+                                        <td>{{ p.tempo_real_minutos }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <div class="detail-empty">Nenhum procedimento registrado.</div>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->

@@ -40,8 +40,7 @@ def list_atend(session : Session, nome_paciente : str):
     stmt = (
         select(Atendimento)
         .join(Paciente, Atendimento.id_paciente == Paciente.id_paciente)
-        .join(Pessoa, Paciente.id_paciente == Pessoa.id_pessoa)
-        .where(Pessoa.nome.ilike(f"%{nome_paciente}%"))
+        .where(Paciente.nome.ilike(f"%{nome_paciente}%"))
         .order_by(Atendimento.data_hora.desc())
     )
     return session.scalars(stmt).all()
@@ -65,13 +64,11 @@ def avg_time_atend_por_residente(session: Session):
     #Calcular o tempo médio de duração dos atendimentos por residente.
     stmt = (
         select(
-            Pessoa.nome.label("nome_residente"),
+            Residente.nome.label("nome_residente"),
             func.avg(Atendimento.duracao_minutos).label("media_duracao_minutos")
         )
         .join(Residente, Atendimento.id_residente == Residente.id_residente)
-        .join(Profissional, Residente.id_residente == Profissional.id_profissional)
-        .join(Pessoa, Profissional.id_profissional == Pessoa.id_pessoa)
-        .group_by(Pessoa.id_pessoa, Pessoa.nome)
+        .group_by(Residente.id_residente, Residente.nome)
         .order_by(func.avg(Atendimento.duracao_minutos).desc())
     )
     return session.execute(stmt).all()

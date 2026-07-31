@@ -1,4 +1,5 @@
-import os 
+import os
+from pathlib import Path
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
@@ -10,7 +11,7 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase
 class Base(DeclarativeBase):
     pass
 
-load_dotenv()
+load_dotenv(Path(__file__).parent / ".env")
  
 DB_USER = os.getenv("DB_USER", "postgres")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "postgres")

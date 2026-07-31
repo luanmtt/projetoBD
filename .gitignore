@@ -5,3 +5,8 @@ run
 .dbeaver/
 .project
 .projetoBD/
+__pycache__/
+.env
+*/__pycache__/
+*.pyc
+*/.env

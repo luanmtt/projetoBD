@@ -45,6 +45,18 @@ def create_app():
     from routes.home import bp as home_bp
     app.register_blueprint(home_bp)
 
+    from routes.pacientes import bp as pacientes_bp
+    app.register_blueprint(pacientes_bp)
+
+    from routes.profissionais import bp as profissionais_bp
+    app.register_blueprint(profissionais_bp)
+
+    from routes.atendimentos import bp as atendimentos_bp
+    app.register_blueprint(atendimentos_bp)
+
+    from routes.plantoes import bp as plantoes_bp
+    app.register_blueprint(plantoes_bp)
+
     return app
 
 

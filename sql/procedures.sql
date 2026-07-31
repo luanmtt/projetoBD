@@ -1,3 +1,14 @@
+/*
+
+
+procedures.sql: 
+
+Esse arquivo
+
+
+*/
+
+
 
 --procedure 1: registra atendimento completo
 

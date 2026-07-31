@@ -144,19 +144,29 @@ projetoBD
 │   ├── database.py         # Conexão com o banco (engine, sessão)
 │   ├── models.py           # Mapeamento objeto-relacional: classes Python ↔ tabelas
 │   ├── CRUD.py             # Operações de Create, Read, Update e Delete via ORM
+│   ├── consultations.py    # Consultas analíticas via ORM
 │   ├── main.py             # Script principal de execução do backend
-│   └── test_cases.py       # Dados de teste em Python (equivalente ao test_cases.sql)
+│   ├── test_cases.py       # Dados de teste em Python (equivalente ao test_cases.sql)
+│   └── .env                # Deve ser criado para acesso ao banco
 │
 ├── ui/                     # Interface web com Flask + Jinja2
 │   ├── app.py              # Fábrica da aplicação Flask
 │   ├── routes/             # Rotas HTTP organizadas por recurso (blueprints)
-│   │   └ home.py  
+│   │   ├── home.py
+│   │   ├── pacientes.py
+│   │   ├── profissionais.py
+│   │   ├── atendimentos.py
+│   │   └── plantoes.py
 │   ├── templates/          # Templates HTML com Jinja2 (base + páginas)
-│   │   ├ index.html
-│   │   └ base.html  
+│   │   ├── base.html
+│   │   ├── index.html
+│   │   ├── pacientes.html
+│   │   ├── profissionais.html
+│   │   ├── atendimentos.html
+│   │   └── plantoes.html
 │   └── static/             # Arquivos estáticos (CSS, JS)
-│       ├ css/style.css
-│       └ js/main.js
+│       ├── css/style.css
+│       └── js/main.js
 │
 ├── run.py                  # Ponto de entrada da aplicação (`python run.py`)
 ├── requirements.txt        # Dependências Python (Flask, SQLAlchemy, psycopg2)

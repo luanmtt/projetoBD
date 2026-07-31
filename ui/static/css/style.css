@@ -26,6 +26,7 @@ style.css:
     --white:     #ffffff;
     --border:    #d4d6d5;
     --shadow:    0 2px 12px rgba(50, 48, 49, 0.08);
+    --danger:    #890a23;
 
     --font:      'Poppins', sans-serif;
     --radius:    8px;
@@ -376,5 +377,284 @@ RESPONSIVO: TABLET E CELULAR
 }
 
 */
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   LISTAGEM — CABEÇALHO DA PÁGINA
+   Título à esquerda, caixas de info à direita.
+*/
+
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem 0 1.5rem;
+    flex-wrap: wrap;
+}
+
+.page-header__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--fg);
+    line-height: 1.2;
+    align-self: center;
+}
+
+.page-header__info {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   INFO-BOX
+   Caixas de informação ao lado do título.
+*/
+
+.info-box {
+    background-color: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    box-shadow: var(--shadow);
+    min-width: 180px;
+}
+
+.info-box__label {
+    font-size: 0.75rem;
+    color: var(--fg-light);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.info-box__value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.2;
+}
+
+.info-box--log {
+    min-width: 240px;
+}
+
+.info-box__dropdown {
+    width: 100%;
+    font-family: var(--font);
+    font-size: 0.85rem;
+    padding: 0.4rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--bg);
+    color: var(--fg);
+    cursor: pointer;
+    margin-top: 0.35rem;
+}
+
+.info-box__dropdown:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.info-box__empty {
+    font-size: 0.8rem;
+    color: var(--fg-light);
+    font-style: italic;
+    margin-top: 0.35rem;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   TABELA DE DADOS
+   Borda verde escuro ao redor, linhas alternando cinza claro e branco.
+*/
+
+.table-wrapper {
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.data-table thead {
+    background-color: var(--accent);
+    color: var(--white);
+}
+
+.data-table th {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.data-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: #f7f8f7;
+}
+
+.data-table tbody tr:nth-child(odd) {
+    background-color: var(--white);
+}
+
+.data-table tbody tr:hover {
+    background-color: #eef0ef;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   BOTÃO EXPAND/COLLAPSE
+   Aparece no hover da linha. +/- pra abrir/fechar procedimentos.
+*/
+
+.expand-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--danger);
+    background-color: var(--white);
+    color: var(--danger);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, border-color 0.2s;
+    padding: 0;
+    visibility: hidden;
+}
+
+.expand-btn:hover {
+    background-color: var(--danger);
+    color: var(--white);
+}
+
+.data-table tbody tr:hover .expand-btn,
+.data-table tbody .data-row:has(+ .detail-row.is-open) .expand-btn {
+    visibility: visible;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   LINHA EXPANDIDA (PROCEDIMENTOS)
+   Borda vermelha escura ao redor do bloco expandido.
+*/
+
+.detail-row {
+    display: none;
+}
+
+.detail-row.is-open {
+    display: table-row;
+}
+
+.detail-cell {
+    padding: 0.75rem 1rem;
+    background-color: var(--white);
+    border: 2px solid var(--danger);
+    border-radius: var(--radius);
+    margin: 0.5rem 1rem;
+}
+
+.detail-cell__title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--danger);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.detail-table th {
+    text-align: left;
+    padding: 0.4rem 0.5rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--fg-light);
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-table td {
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.detail-empty {
+    font-size: 0.8rem;
+    color: var(--fg-light);
+    font-style: italic;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   LEGENDA EXPAND
+*/
+
+.expand-legend {
+    font-size: 0.8rem;
+    color: var(--fg-light);
+    font-weight: 400;
+    align-self: center;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   RESPONSIVO — LISTAGEM
+*/
+
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-header__info {
+        width: 100%;
+    }
+
+    .info-box {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+}
+
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */

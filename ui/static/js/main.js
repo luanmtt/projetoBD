@@ -66,6 +66,26 @@ function fetchStats() {
 }
 
 
+/**
+ * ────────────────────────────────────────────────────────────────
+ * toggleDetail
+ *
+ * Expande ou colapsa a linha de detalhes (procedimentos)
+ * abaixo de uma linha de atendimento.
+ *
+ * O botão + vira - quando expandido.
+ */
+function toggleDetail(btn) {
+    var dataRow = btn.closest('.data-row');
+    var detailRow = dataRow.nextElementSibling;
+
+    if (detailRow && detailRow.classList.contains('detail-row')) {
+        var isOpen = detailRow.classList.toggle('is-open');
+        btn.textContent = isOpen ? '−' : '+';
+    }
+}
+
+
 // ────────────────────────────────────────────────────────────────
 // INIT: roda quando a página carrega
 

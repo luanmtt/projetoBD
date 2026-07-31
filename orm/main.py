@@ -3,7 +3,7 @@ from database import engine, SessionLocal, Base
 import models
 import CRUD
 from test_cases import popular_banco
-
+from consultations import *
 
 # ──────────────────────────────────────────────────────────────────────────────────────────────────
 
@@ -20,18 +20,20 @@ def main():
             print(f"ID: {at.id_atendimento} | Data: {at.data_hora} | Paciente: {at.paciente.nome}")
             
 # ──────────────────────────────────────────────────────────────────────────────────────────────────
-        
+ 
+
         print("\n" + "━"*80)
         print("1. PRECEPTORES QUE ATENDERAM PACIENTES FLAMENGUISTAS")
         print("━"*80)
-        preceptores = CRUD.listar_preceptores_pacientes_flamenguistas(session)
+        preceptores = listar_preceptores_is_flamengo(session)
         for p in preceptores:
             print(f"Preceptor: {p.nome} | Titulação: {p.titulacao} | CRM: {p.crm}")
         
+
         print("\n" + "━"*80)
         print("2. ÚLTIMO ATENDIMENTO POR PACIENTE (Testando Eager Loading)")
         print("━"*80)
-        ultimos_atendimentos = CRUD.listar_ultimo_atendimento_por_paciente(session)
+        ultimos_atendimentos = listar_ultimo_atendimento(session)
         for at in ultimos_atendimentos:
             print(f"\nData: {at.data_hora} | Paciente: {at.paciente.nome}")
             print(f"   Residente: {at.residente.nome}")
@@ -41,11 +43,12 @@ def main():
             for pr in at.procedimentos_realizados:
                 print(f"     - {pr.procedimento.nome} (Qtd: {pr.quantidade})")
 
+
         
         print("\n" + "━"*80)
         print("3. ESTATÍSTICAS DE RISCO POR RESIDENTE")
         print("━"*80)
-        estatisticas = CRUD.percentual_alto_risco_por_residente(session)
+        estatisticas = percentual_alto_risco_por_residente(session)
         for stat in estatisticas:
            
             print(f"Residente: {stat.nome_residente}")
@@ -53,6 +56,7 @@ def main():
             
             perc = stat.percentual_alto_risco or 0 
             print(f"   Taxa de Alto Risco: {perc:.2f}%\n")
+
 
 # ──────────────────────────────────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":

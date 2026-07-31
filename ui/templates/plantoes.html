@@ -1,0 +1,71 @@
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     PLANTOES.HTML — LISTAGEM DE PLANTÕES
+
+     Herda de base.html.
+     Exibe título, caixas de info (total + último log) e tabela de dados.
+-->
+
+
+{% extends "base.html" %}
+{% block title %}Plantões — HospitalBD{% endblock %}
+{% block content %}
+
+    <!-- ── Cabeçalho: título + caixas de info ── -->
+
+    <div class="page-header">
+        <h1 class="page-header__title">Plantões</h1>
+
+        <div class="page-header__info">
+
+            <!-- ── Total cadastrados ── -->
+            <div class="info-box">
+                <div class="info-box__label">Cadastrados</div>
+                <div class="info-box__value">{{ total }}</div>
+            </div>
+
+            <!-- ── Último log ── -->
+            <div class="info-box info-box--log">
+                <div class="info-box__label">Último log</div>
+                {% if ultimo_log %}
+                    <select class="info-box__dropdown">
+                        <option>{{ ultimo_log.data_hora.strftime('%d/%m/%Y %H:%M') }} — {{ ultimo_log.operacao }} por {{ ultimo_log.usuario }}</option>
+                    </select>
+                {% else %}
+                    <div class="info-box__empty">Nenhum log disponível</div>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── Tabela de dados ── -->
+
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Preceptor</th>
+                    <th>Unidade</th>
+                    <th>Dia</th>
+                    <th>Turno</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pl in plantoes %}
+                <tr>
+                    <td>{{ pl.id_plantao }}</td>
+                    <td>{{ pl.nome_preceptor }}</td>
+                    <td>{{ pl.nome_unidade }}</td>
+                    <td>{{ pl.dia_semana.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ pl.turno }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
