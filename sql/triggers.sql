@@ -19,7 +19,6 @@ Esses são:
         → Atualiza uma coluna media_tempo_procedimento na tabela PROCEDIMENTO (média do tempo_real_minutos daquele procedimento 
                                                                                em todos os atendimentos).
 
-
 */
 
 
@@ -146,30 +145,35 @@ EXECUTE PROCEDURE funcao_auditoria_atendimento();
 
 -- função do trigger
 CREATE OR REPLACE FUNCTION atualiza_media()
-RETURN TRIGGER AS $$
+RETURNS TRIGGER AS $$
 DECLARE
     media_antiga  NUMERIC;
     media_nova    NUMERIC;
     nome_proc     VARCHAR(100);
 
 BEGIN
-        
+
     SELECT media_tempo_procedimento, nome
     INTO media_antiga, nome_proc
     FROM procedimento
     WHERE id_procedimento = NEW.id_procedimento;
-    
+
     SELECT AVG(tempo_real_minutos)
     INTO media_nova
     FROM procedimento_realizado
     WHERE id_procedimento = NEW.id_procedimento;
 
-    RAISE NOTICE 'A média do procedimento "%" passou de %min para %min', 
-    nome_proc, media_nova, media_antiga;
 
-RETURN NULL;
+    UPDATE procedimento
+    SET media_tempo_procedimento = media_nova
+    WHERE id_procedimento = NEW.id_procedimento;
 
-END
+    RAISE NOTICE 'Média do procedimento "%" atualizada: % min → % min',
+        nome_proc, media_antiga, media_nova;
+
+    RETURN NULL;
+
+END;
 $$
 LANGUAGE plpgsql;
 

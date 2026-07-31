@@ -163,7 +163,8 @@ class Procedimento(Base):
                                                default="PROC-0000"
                                                )
     nome:           Mapped[str] = mapped_column(String(50), nullable=False)
-    tempo_medio_minutos: Mapped[float] = mapped_column(Numeric(4,2),nullable=False)
+    tempo_medio_minutos: Mapped[float] = mapped_column(Numeric(4,2), nullable=False)
+    media_tempo_procedimento: Mapped[Optional[float]] = mapped_column(Numeric(4,2))
 
     realizacoes: Mapped[List["ProcedimentoRealizado"]] = relationship(back_populates="procedimento")
 

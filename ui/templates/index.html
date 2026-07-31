@@ -1,0 +1,134 @@
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     INDEX.HTML — PÁGINA INICIAL DO SISTEMA
+
+     Herda de base.html (o layout compartilhado).
+     Tudo que está entre as tags block content e endblock
+     é inserido dentro do <main> do base.html.
+
+     Se quiser adicionar uma nova seção:
+       1. Copie um bloco abaixo (ex: hero ou nav-grid)
+       2. Troque os textos e links
+       3. O CSS já está pronto pra ela
+-->
+
+
+{% extends "base.html" %}
+{% block title %}Início — HospitalBD{% endblock %}
+{% block content %}
+
+    <!-- ────────────────────────────────────────────────
+         HERO
+         Cabeçalho de boas-vindas. Só título e subtítulo.
+    -->
+
+
+    <section class="hero">
+        <h1 class="hero__title">Sistema de Gestão Hospitalar</h1>
+        <p class="hero__subtitle">
+            Gerencie pacientes, profissionais, atendimentos, procedimentos
+            e escalas de plantão em um só lugar.
+        </p>
+    </section>
+
+
+    <!-- ────────────────────────────────────────────────
+         CARDS DE ESTATÍSTICA
+         Números chamativos no topo. Cada card é um
+         `<div class="stat-card">` com número e legenda.
+
+         Os números são fixos agora (placeholder).
+         Depois conectamos com dados reais do banco.
+    -->
+
+    <section class="stats">
+
+        <!-- ── Total de Pacientes ── -->
+        <div class="stat-card">
+            <div class="stat-card__number">0</div>
+            <div class="stat-card__label">Pacientes cadastrados</div>
+        </div>
+
+        <!-- ── Total de Profissionais ── -->
+        <div class="stat-card">
+            <div class="stat-card__number">0</div>
+            <div class="stat-card__label">Profissionais ativos</div>
+        </div>
+
+        <!-- ── Total de Atendimentos ── -->
+        <div class="stat-card">
+            <div class="stat-card__number">0</div>
+            <div class="stat-card__label">Atendimentos realizados</div>
+        </div>
+    </section>
+
+    <!-- ────────────────────────────────────────────────
+         ACESSO RÁPIDO
+         Grade de cards que levam pras seções do sistema.
+         Cada `<a class="nav-card">` tem:
+            - um ícone (emoji, 2 chars no máx)
+            - um título
+            - uma descrição curta
+    -->
+
+    <h2 class="section-title">Acesso rápido</h2>
+    <div class="nav-grid">
+
+        <!-- ── Pacientes ── -->
+        <a href="#" class="nav-card">
+            <span class="nav-card__icon">🩺</span>
+            <div>
+                <div class="nav-card__title">Pacientes</div>
+                <div class="nav-card__desc">Cadastro, consulta, internações e alergias</div>
+            </div>
+        </a>
+
+        <!-- ── Profissionais ── -->
+        <a href="#" class="nav-card">
+            <span class="nav-card__icon">👨‍⚕️</span>
+            <div>
+                <div class="nav-card__title">Profissionais</div>
+                <div class="nav-card__desc">Médicos, preceptores e residentes</div>
+            </div>
+        </a>
+
+        <!-- ── Atendimentos ── -->
+        <a href="#" class="nav-card">
+            <span class="nav-card__icon">📋</span>
+            <div>
+                <div class="nav-card__title">Atendimentos</div>
+                <div class="nav-card__desc">Registro, duração e procedimentos realizados</div>
+            </div>
+        </a>
+
+        <!-- ── Procedimentos ── -->
+        <a href="#" class="nav-card">
+            <span class="nav-card__icon">💉</span>
+            <div>
+                <div class="nav-card__title">Procedimentos</div>
+                <div class="nav-card__desc">Cadastro por nível de risco</div>
+            </div>
+        </a>
+
+        <!-- ── Plantões e Escalas ── -->
+        <a href="#" class="nav-card">
+            <span class="nav-card__icon">📅</span>
+            <div>
+                <div class="nav-card__title">Plantões &amp; Escalas</div>
+                <div class="nav-card__desc">Alocação de residentes por unidade e turno</div>
+            </div>
+        </a>
+
+        <!-- ── Analytics ── -->
+        <a href="#" class="nav-card">
+            <span class="nav-card__icon">📊</span>
+            <div>
+                <div class="nav-card__title">Analytics</div>
+                <div class="nav-card__desc">Rankings, estatísticas e consultas avançadas</div>
+            </div>
+        </a>
+    </div>
+
+{% endblock %}
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
