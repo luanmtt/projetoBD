@@ -1,0 +1,94 @@
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- ────────────────────────────────────────────────
+         TÍTULO DA PÁGINA
+         O `block title` é substituído por cada página filha.
+         Se a filha não definir, aparece "HospitalBD".
+    -->
+
+    <title>{% block title %}Hospital Universitário Dra. Yuska Maritan Brito{% endblock %}</title>
+
+
+    <!-- ────────────────────────────────────────────────
+         FONTE: POPPINS (GOOGLE FONTS)
+         Carrega pesos 300, 400, 500, 600, 700.
+         `display=swap` evita texto invisível enquanto carrega.
+    -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+    <!-- ────────────────────────────────────────────────
+         CSS
+    -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+
+    <!-- ════════════════════════════════════════════════
+         NAVBAR
+         Fixa no topo, com o nome do sistema à esquerda
+         e links de navegação à direita.
+    -->
+
+    <nav class="navbar">
+        <div class="navbar__inner">
+            <!-- ── Logo / nome do sistema ── -->
+            <a href="{{ url_for('home.index') }}" class="navbar__brand">
+                <span class="navbar__icon">🏥</span>
+                <span class="navbar__title">HospitalBD</span>
+            </a>
+
+            <!-- ── Links de navegação ── -->
+            <ul class="navbar__links">
+                <li><a href="{{ url_for('home.index') }}" class="navbar__link">Início</a></li>
+                <li><a href="#" class="navbar__link">Pacientes</a></li>
+                <li><a href="#" class="navbar__link">Profissionais</a></li>
+                <li><a href="#" class="navbar__link">Atendimentos</a></li>
+                <li><a href="#" class="navbar__link">Plantões</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- ──────────────────────────────────────────────────────────────────────────────────────────────────
+         CONTEÚDO PRINCIPAL
+         Cada página coloca seu conteúdo dentro deste bloco.
+    -->
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+
+    <!-- ──────────────────────────────────────────────────────────────────────────────────────────────────
+         FOOTER
+         Sutil, no fim da página. Sempre igual.
+    -->
+
+    <footer class="footer">
+        <p>Projeto de Banco de Dados — 2026</p>
+    </footer>
+
+
+    <!-- ────────────────────────────────────────────────
+         NOSSO JAVASCRIPT
+         Carrega no fim do <body> pra não travar o HTML.
+    -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->

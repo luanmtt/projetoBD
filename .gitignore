@@ -1,6 +1,7 @@
 .bd
 todo
 run
+.run
 .dbeaver/
 .project
 .projetoBD/

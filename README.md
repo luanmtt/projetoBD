@@ -121,38 +121,6 @@ brew install postgresql
 
 7. Usar das consultas/operações presentes em `sql/CRUD.sql` e `sql/analytics.sql`.
 
-### 4. Docker
-
-**Como rodar e acessar:**
-
-1. Baixe a imagem e inicie o container do PostgreSQL mapeando a porta padrão e definindo a senha (`postgres` no exemplo):
-   ```bash
-   docker run --name hospitalbd-postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
-   ```
-
-2. Copie a pasta `sql/` do seu projeto local para dentro do diretório raiz do container recém-criado:
-   ```bash
-   docker cp sql/ hospitalbd-postgres:/sql/
-   ```
-
-3. Acesse o terminal interativo (`psql`) dentro do container:
-   ```bash
-   docker exec -it hospitalbd-postgres psql -U postgres
-   ```
-
-4. No terminal do banco, crie o banco de dados e conecte-se a ele:
-   ```sql
-   DROP DATABASE IF EXISTS hospitalbd;
-   CREATE DATABASE hospitalbd;
-   \c hospitalbd
-   ```
-
-5. Rode os scripts na ordem (os arquivos foram copiados para a raiz `/sql/` dentro do container):
-   ```sql
-   \i /sql/schema.sql
-   \i /sql/test_cases.sql
-   ```
-
 ---
 
 ## Estrutura do Repositório
@@ -161,21 +129,37 @@ brew install postgresql
 projetoBD
 │
 ├── docs/
-│   ├── DER_Completo.pdf       # Diagrama Entidade-Relacionamento completo do projeto
-│   └── modelagem.pdf          # Documento de modelagem conceitual, lógica e física
+│   ├── DER_Completo.pdf    # Diagrama Entidade-Relacionamento completo do projeto
+│   └── modelagem.pdf       # Documento de modelagem conceitual, lógica e física
 │
 ├── sql/
-│   ├── schema.sql             # Definição do esquema do banco de dados (CREATE TABLEs, constraints, chaves)
-│   ├── CRUD.sql               # Operações de Create, Read, Update e Delete sobre as tabelas
-│   ├── analytics.sql          # Consultas analíticas (rankings, agregações, estatísticas)
-│   ├── views.sql              # Criação de Views (rankings procedimento, atendimentos, residentes) 
-│   ├── triggers.sql           # Criação de triggers para auditoria, checagem de regra de negócio e estatísticas
-│   └── test_cases.sql         # Dados de teste para popular o banco (pessoas, atendimentos, procedimentos, etc.)
+│   ├── schema.sql          # Definição do esquema do banco de dados (CREATE TABLEs, constraints, chaves)
+│   ├── CRUD.sql            # Operações de Create, Read, Update e Delete sobre as tabelas
+│   ├── analytics.sql       # Consultas analíticas (rankings, agregações, estatísticas)
+│   ├── views.sql           # Criação de Views (rankings procedimento, atendimentos, residentes) 
+│   ├── triggers.sql        # Criação de triggers para auditoria, checagem de regra de negócio e estatísticas
+│   └── test_cases.sql      # Dados de teste para popular o banco (pessoas, atendimentos, procedimentos, etc.)
 │
-├── orm/
-│   ├── database.py            # Configuração de conexão com o banco via SQLAlchemy (engine, session)
-│   └── models.py              # Mapeamento objeto-relacional: classes Python ↔ tabelas do banco
+├── orm/                    # Camada de acesso a dados via SQLAlchemy
+│   ├── database.py         # Conexão com o banco (engine, sessão)
+│   ├── models.py           # Mapeamento objeto-relacional: classes Python ↔ tabelas
+│   ├── CRUD.py             # Operações de Create, Read, Update e Delete via ORM
+│   ├── main.py             # Script principal de execução do backend
+│   └── test_cases.py       # Dados de teste em Python (equivalente ao test_cases.sql)
 │
-├── .gitignore                 # Arquivos e diretórios ignorados pelo Git
-└── README.md                  # o que estás lendo!
+├── ui/                     # Interface web com Flask + Jinja2
+│   ├── app.py              # Fábrica da aplicação Flask
+│   ├── routes/             # Rotas HTTP organizadas por recurso (blueprints)
+│   │   └ home.py  
+│   ├── templates/          # Templates HTML com Jinja2 (base + páginas)
+│   │   ├ index.html
+│   │   └ base.html  
+│   └── static/             # Arquivos estáticos (CSS, JS)
+│       ├ css/style.css
+│       └ js/main.js
+│
+├── run.py                  # Ponto de entrada da aplicação (`python run.py`)
+├── requirements.txt        # Dependências Python (Flask, SQLAlchemy, psycopg2)
+├── .gitignore              # Arquivos e diretórios ignorados pelo Git
+└── README.md               # o que estás lendo!
 ```

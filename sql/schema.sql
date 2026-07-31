@@ -10,7 +10,7 @@ O arquivo de modelagem está na root do projeto como Modelagem.pdf.
 
 */
 
-drop table if exists auditoria_atendimento cascade;
+drop table if exists auditoria_atendimento CASCADE;
 DROP TABLE IF EXISTS escala CASCADE;
 DROP TABLE IF EXISTS plantao CASCADE;
 DROP TABLE IF EXISTS internacao CASCADE;
@@ -151,8 +151,7 @@ CREATE TABLE procedimento(
 	id_nivel_risco INTEGER NOT NULL,
 	codigo VARCHAR(9) NOT NULL DEFAULT 'PROC-0000',
 	nome VARCHAR(50) NOT NULL,
-	-- tempo_medio_minutos NUMERIC(4,2) NOT NULL CHECK (tempo_medio_minutos >= 0) CHECK (tempo_medio_minutos < 1000),
-    media_tempo_procedimento NUMERIC(4,2) NOT NULL CHECK (media_tempo_procedimento >= 0) CHECK (media_tempo_procedimento < 1000),
+    media_tempo_procedimento NUMERIC(4,2) CHECK (media_tempo_procedimento >= 0) CHECK (media_tempo_procedimento < 1000),
 
 
 	CONSTRAINT fk_nivel_risco

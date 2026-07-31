@@ -4,6 +4,10 @@ import models
 import CRUD
 from test_cases import popular_banco
 
+
+# ──────────────────────────────────────────────────────────────────────────────────────────────────
+
+
 def main():
     popular_banco()
 
@@ -15,5 +19,11 @@ def main():
         for at in atendimentos:
             print(f"ID: {at.id_atendimento} | Data: {at.data_hora} | Paciente: {at.paciente.nome}")
 
+
+# ──────────────────────────────────────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     main()
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+

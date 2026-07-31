@@ -10,7 +10,8 @@ Elas são:
 
     • vw_pacientes_internados: pacientes que estão atualmente internados (data_hora_saida IS NULL na internação mais recente).
 
-    • vw_residentes_sem_supervisor: residentes que estão escalados em algum plantão, mas cujo preceptor não tem titulação de doutor (ou não possui supervisão ativa).
+    • vw_residentes_sem_supervisor: residentes que estão escalados em algum plantão, mas cujo preceptor não tem titulação de doutor 
+                                                                                                                (ou não possui supervisão ativa).
 
     • vw_estatisticas_atendimentos_mensal: agregação por mês e por unidade: total de atendimentos, média de duração, procedimentos mais comuns.
 

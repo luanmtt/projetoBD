@@ -107,7 +107,7 @@ VALUES
     (1, 'PROC-0001', 'Curativo Simples', 20.00, 1),
     (2, 'PROC-0002', 'Sutura', 35.00, 2),
     (3, 'PROC-0003', 'Drenagem', 45.00, 3),
-    (4, 'PROC-0004', 'Redução de Fratura', 60.00, 2),
+    (4, 'PROC-0004', 'Redução de Fratura',60.00, 2),
     (5, 'PROC-0005', 'Punção', 15.00, 2);
 
 
