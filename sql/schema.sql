@@ -167,6 +167,7 @@ CREATE TABLE procedimento_realizado(
 	id_procedimento INTEGER NOT NULL,
 	quantidade INTEGER NOT NULL,
 	observacao TEXT,
+	data_hora_inicio TIMESTAMP NOT NULL,
 	tempo_real_minutos NUMERIC(4,2) NOT NULL CHECK (tempo_real_minutos >= 0) CHECK(tempo_real_minutos < 1000),
     faturamento_processado BOOLEAN DEFAULT FALSE,
 

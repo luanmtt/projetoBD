@@ -113,18 +113,18 @@ VALUES
 
 -- procedimentos realizados
 INSERT INTO procedimento_realizado (id_atendimento, id_procedimento, quantidade, tempo_real_minutos,
-                                    observacao, faturamento_processado)
+                                    observacao, data_hora_inicio, faturamento_processado)
 VALUES
-    (10, 1, 1, 25, 'Procedimento sem intercorrências', TRUE),
-    (20, 2, 2, 40, 'Paciente colaborativo', FALSE),
-    (30, 1, 1, 18, NULL, TRUE),
-    (40, 3, 1, 55, 'Necessário auxílio do preceptor', FALSE),
-    (50, 2, 1, 20, 'Realizado rapidamente', TRUE),
-    (60, 4, 3, 35, 'Repetido devido a erro inicial', FALSE),
-    (70, 1, 1, 30, NULL, FALSE),
-    (80, 5, 1, 12, 'Procedimento simples', FALSE),
-    (90, 3, 2, 45, 'Leve atraso no início', TRUE),
-    (11, 2, 1, 28, NULL, TRUE);
+    (10, 1, 1, 25, 'Procedimento sem intercorrências', '2026-06-01 08:42:00', TRUE),
+    (20, 2, 2, 40, 'Paciente colaborativo', '2026-06-01 09:26:00', FALSE),
+    (30, 1, 1, 18, NULL, '2026-06-02 10:04:00', TRUE),
+    (40, 3, 1, 55, 'Necessário auxílio do preceptor', '2026-06-02 11:47:00', FALSE),
+    (50, 2, 1, 20, 'Realizado rapidamente','2026-06-03 08:18:00', TRUE),
+    (60, 4, 3, 35, 'Repetido devido a erro inicial', '2026-06-03 14:36:00', FALSE),
+    (70, 1, 1, 30, NULL, '2026-06-04 09:58:00', FALSE),
+    (80, 5, 1, 12, 'Procedimento simples', '2026-06-04 13:16:00', FALSE),
+    (90, 3, 2, 45, 'Leve atraso no início', '2026-06-05 10:46:00', TRUE),
+    (11, 2, 1, 28, NULL, 2026-06-05 16:10:00, '2026-06-05 16:11:00', TRUE);
 
 
 -- alergias

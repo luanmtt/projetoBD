@@ -186,6 +186,12 @@ class ProcedimentoRealizado(Base):
 
     quantidade: Mapped[int] = mapped_column(Integer, nullable=False)
     observacao: Mapped[str] = mapped_column(Text)
+
+    data_hora_inicio: Mapped[date] = mapped_column(
+            DateTime,
+            nullable=False
+        )
+    
     tempo_real_minutos: Mapped[float] = mapped_column(Numeric(4,2), nullable=False)
     faturamento_processado:Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 

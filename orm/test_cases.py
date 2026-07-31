@@ -157,16 +157,16 @@ def popular_banco():
 
         # 8. Procedimentos Realizados
         procedimentos_realizados = [
-            ProcedimentoRealizado(id_atendimento=10, id_procedimento=1, quantidade=1, tempo_real_minutos=Decimal('25.00'), observacao='Procedimento sem intercorrências', faturamento_processado=True),
-            ProcedimentoRealizado(id_atendimento=20, id_procedimento=2, quantidade=2, tempo_real_minutos=Decimal('40.00'), observacao='Paciente colaborativo', faturamento_processado=False),
-            ProcedimentoRealizado(id_atendimento=30, id_procedimento=1, quantidade=1, tempo_real_minutos=Decimal('18.00'), observacao=None, faturamento_processado=True),
-            ProcedimentoRealizado(id_atendimento=40, id_procedimento=3, quantidade=1, tempo_real_minutos=Decimal('55.00'), observacao='Necessário auxílio do preceptor', faturamento_processado=False),
-            ProcedimentoRealizado(id_atendimento=50, id_procedimento=2, quantidade=1, tempo_real_minutos=Decimal('20.00'), observacao='Realizado rapidamente', faturamento_processado=True),
-            ProcedimentoRealizado(id_atendimento=60, id_procedimento=4, quantidade=3, tempo_real_minutos=Decimal('35.00'), observacao='Repetido devido a erro inicial', faturamento_processado=False),
-            ProcedimentoRealizado(id_atendimento=70, id_procedimento=1, quantidade=1, tempo_real_minutos=Decimal('30.00'), observacao=None, faturamento_processado=False),
-            ProcedimentoRealizado(id_atendimento=80, id_procedimento=5, quantidade=1, tempo_real_minutos=Decimal('12.00'), observacao='Procedimento simples', faturamento_processado=False),
-            ProcedimentoRealizado(id_atendimento=90, id_procedimento=3, quantidade=2, tempo_real_minutos=Decimal('45.00'), observacao='Leve atraso no início', faturamento_processado=True),
-            ProcedimentoRealizado(id_atendimento=11, id_procedimento=2, quantidade=1, tempo_real_minutos=Decimal('28.00'), observacao=None, faturamento_processado=True),
+            ProcedimentoRealizado(id_atendimento=10, id_procedimento=1, quantidade=1, data_hora_inicio=datetime(2026, 6, 1, 8, 42), tempo_real_minutos=Decimal('25.00'), observacao='Procedimento sem intercorrências', faturamento_processado=True),
+            ProcedimentoRealizado(id_atendimento=20, id_procedimento=2, quantidade=2, data_hora_inicio=datetime(2026, 6, 1, 9, 26), tempo_real_minutos=Decimal('40.00'), observacao='Paciente colaborativo', faturamento_processado=False),
+            ProcedimentoRealizado(id_atendimento=30, id_procedimento=1, quantidade=1, data_hora_inicio=datetime(2026, 6, 2, 10, 4), tempo_real_minutos=Decimal('18.00'), observacao=None, faturamento_processado=True),
+            ProcedimentoRealizado(id_atendimento=40, id_procedimento=3, quantidade=1, data_hora_inicio=datetime(2026, 6, 2, 11, 47), tempo_real_minutos=Decimal('55.00'), observacao='Necessário auxílio do preceptor', faturamento_processado=False),
+            ProcedimentoRealizado(id_atendimento=50, id_procedimento=2, quantidade=1, data_hora_inicio=datetime(2026, 6, 3, 8, 18), tempo_real_minutos=Decimal('20.00'), observacao='Realizado rapidamente', faturamento_processado=True),
+            ProcedimentoRealizado(id_atendimento=60, id_procedimento=4, quantidade=3, data_hora_inicio=datetime(2026, 6, 3, 14, 36), tempo_real_minutos=Decimal('35.00'), observacao='Repetido devido a erro inicial', faturamento_processado=False),
+            ProcedimentoRealizado(id_atendimento=70, id_procedimento=1, quantidade=1, data_hora_inicio=datetime(2026, 6, 4, 9, 58), tempo_real_minutos=Decimal('30.00'), observacao=None, faturamento_processado=False),
+            ProcedimentoRealizado(id_atendimento=80, id_procedimento=5, quantidade=1, data_hora_inicio=datetime(2026, 6, 4, 13, 16), tempo_real_minutos=Decimal('12.00'), observacao='Procedimento simples', faturamento_processado=False),
+            ProcedimentoRealizado(id_atendimento=90, id_procedimento=3, quantidade=2, data_hora_inicio=datetime(2026, 6, 5, 10, 46), tempo_real_minutos=Decimal('45.00'), observacao='Leve atraso no início', faturamento_processado=True),
+            ProcedimentoRealizado(id_atendimento=11, id_procedimento=2, quantidade=1, data_hora_inicio=datetime(2026, 6, 5, 16, 11), tempo_real_minutos=Decimal('28.00'), observacao=None, faturamento_processado=True),
         ]
         session.add_all(procedimentos_realizados)
 
