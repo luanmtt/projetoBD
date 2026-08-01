@@ -3,7 +3,7 @@ from database import engine, SessionLocal, Base
 import models
 import CRUD
 from test_cases import popular_banco
-from consultations import *
+from adv_queries import *
 
 # ──────────────────────────────────────────────────────────────────────────────────────────────────
 
