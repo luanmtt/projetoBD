@@ -126,16 +126,16 @@ def popular_banco():
 
         # 5. Atendimentos
         atendimentos = [
-            Atendimento(id_atendimento=10, id_paciente=1, id_residente=11, id_preceptor=6, data_hora=datetime(2026, 6, 1, 8, 30), duracao_minutos=Decimal('30.00')),
-            Atendimento(id_atendimento=20, id_paciente=2, id_residente=12, id_preceptor=6, data_hora=datetime(2026, 6, 1, 9, 15), duracao_minutos=Decimal('45.00')),
-            Atendimento(id_atendimento=30, id_paciente=3, id_residente=15, id_preceptor=7, data_hora=datetime(2026, 6, 2, 10, 0), duracao_minutos=Decimal('20.00')),
-            Atendimento(id_atendimento=40, id_paciente=4, id_residente=11, id_preceptor=7, data_hora=datetime(2026, 6, 2, 11, 30), duracao_minutos=Decimal('60.00')),
-            Atendimento(id_atendimento=50, id_paciente=5, id_residente=13, id_preceptor=8, data_hora=datetime(2026, 6, 3, 8, 0), duracao_minutos=Decimal('25.00')),
-            Atendimento(id_atendimento=60, id_paciente=1, id_residente=14, id_preceptor=6, data_hora=datetime(2026, 6, 3, 14, 20), duracao_minutos=Decimal('40.00')),
-            Atendimento(id_atendimento=70, id_paciente=2, id_residente=12, id_preceptor=8, data_hora=datetime(2026, 6, 4, 9, 45), duracao_minutos=Decimal('35.00')),
-            Atendimento(id_atendimento=80, id_paciente=3, id_residente=11, id_preceptor=7, data_hora=datetime(2026, 6, 4, 13, 10), duracao_minutos=Decimal('15.00')),
-            Atendimento(id_atendimento=90, id_paciente=4, id_residente=14, id_preceptor=8, data_hora=datetime(2026, 6, 5, 10, 30), duracao_minutos=Decimal('50.00')),
-            Atendimento(id_atendimento=11, id_paciente=5, id_residente=15, id_preceptor=6, data_hora=datetime(2026, 6, 5, 16, 0), duracao_minutos=Decimal('30.00')),
+            Atendimento(id_atendimento=10, id_paciente=1, id_residente=11, id_preceptor=6, id_unidade = 1, data_hora=datetime(2026, 6, 1, 8, 30), duracao_minutos=Decimal('30.00')),
+            Atendimento(id_atendimento=20, id_paciente=2, id_residente=12, id_preceptor=6, id_unidade = 2, data_hora=datetime(2026, 6, 1, 9, 15), duracao_minutos=Decimal('45.00')),
+            Atendimento(id_atendimento=30, id_paciente=3, id_residente=15, id_preceptor=7, id_unidade = 1, data_hora=datetime(2026, 6, 2, 10, 0), duracao_minutos=Decimal('20.00')),
+            Atendimento(id_atendimento=40, id_paciente=4, id_residente=11, id_preceptor=7, id_unidade = 3, data_hora=datetime(2026, 6, 2, 11, 30), duracao_minutos=Decimal('60.00')),
+            Atendimento(id_atendimento=50, id_paciente=5, id_residente=13, id_preceptor=8, id_unidade = 2, data_hora=datetime(2026, 6, 3, 8, 0), duracao_minutos=Decimal('25.00')),
+            Atendimento(id_atendimento=60, id_paciente=1, id_residente=14, id_preceptor=6, id_unidade = 2, data_hora=datetime(2026, 6, 3, 14, 20), duracao_minutos=Decimal('40.00')),
+            Atendimento(id_atendimento=70, id_paciente=2, id_residente=12, id_preceptor=8, id_unidade = 3, data_hora=datetime(2026, 6, 4, 9, 45), duracao_minutos=Decimal('35.00')),
+            Atendimento(id_atendimento=80, id_paciente=3, id_residente=11, id_preceptor=7, id_unidade = 1, data_hora=datetime(2026, 6, 4, 13, 10), duracao_minutos=Decimal('15.00')),
+            Atendimento(id_atendimento=90, id_paciente=4, id_residente=14, id_preceptor=8, id_unidade = 3, data_hora=datetime(2026, 6, 5, 10, 30), duracao_minutos=Decimal('50.00')),
+            Atendimento(id_atendimento=11, id_paciente=5, id_residente=15, id_preceptor=6, id_unidade = 1, data_hora=datetime(2026, 6, 5, 16, 0), duracao_minutos=Decimal('30.00')),
         ]
         session.add_all(atendimentos)
         session.flush()

@@ -124,7 +124,7 @@ VALUES
     (70, 1, 1, 30, NULL, '2026-06-04 09:58:00', FALSE),
     (80, 5, 1, 12, 'Procedimento simples', '2026-06-04 13:16:00', FALSE),
     (90, 3, 2, 45, 'Leve atraso no início', '2026-06-05 10:46:00', TRUE),
-    (11, 2, 1, 28, NULL, 2026-06-05 16:10:00, '2026-06-05 16:11:00', TRUE);
+    (11, 2, 1, 28, NULL, '2026-06-05 16:11:00', TRUE);
 
 
 -- alergias
@@ -135,6 +135,31 @@ VALUES
     (30, 3, 'Dipirona'),
     (40, 4, 'Água'),
     (50, 5, 'Poeira');
+
+-- plantões
+INSERT INTO plantao (id_plantao, id_preceptor, id_unidade, dia_semana, turno)
+VALUES
+    (1, 6, 1, '2026-06-01', 'manhã'),
+    (2, 7, 2, '2026-06-01', 'tarde'),
+    (3, 8, 3, '2026-06-02', 'noite'),
+    (4, 9, 1, '2026-06-03', 'manhã'),
+    (5, 10, 2, '2026-06-03', 'tarde');
+
+-- escalas
+INSERT INTO escala (id_escala, id_plantao, id_residente)
+VALUES
+    (1, 1, 11),
+    (2, 1, 12),
+    (3, 2, 13),
+    (4, 3, 14),
+    (5, 4, 15);
+
+-- internações
+INSERT INTO internacao (id_internacao, id_paciente, data_hora_entrada, data_hora_saida)
+VALUES
+    (1, 1, '2026-05-20 14:00:00', '2026-05-25 10:00:00'),
+    (2, 2, '2026-06-01 08:00:00', NULL),
+    (3, 3, '2026-06-02 11:30:00', '2026-06-04 16:00:00');
 
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
