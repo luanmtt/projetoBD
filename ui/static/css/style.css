@@ -633,6 +633,122 @@ RESPONSIVO: TABLET E CELULAR
 
 
 /* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   FORMULÁRIO DE ADIÇÃO
+   Seção expansível abaixo da tabela.
+*/
+
+.form-section {
+    margin-top: 2rem;
+}
+
+.form-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    background: none;
+    border: none;
+    font-family: var(--font);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--fg);
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.form-toggle:hover {
+    color: var(--accent);
+}
+
+.form-toggle__arrow {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s;
+}
+
+.form-toggle.is-open .form-toggle__arrow {
+    transform: rotate(180deg);
+}
+
+.form-body {
+    display: none;
+    background-color: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.form-body.is-open {
+    display: block;
+}
+
+.form-subtitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.25rem 0 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.form-subtitle:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--fg-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select {
+    font-family: var(--font);
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--bg);
+    color: var(--fg);
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.form-actions {
+    margin-top: 1.25rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-group--hidden {
+    display: none;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
    RESPONSIVO — LISTAGEM
 */
 

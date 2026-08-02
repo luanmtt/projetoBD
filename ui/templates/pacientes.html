@@ -2,7 +2,8 @@
      PACIENTES.HTML — LISTAGEM DE PACIENTES
 
      Herda de base.html.
-     Exibe título, caixas de info (total + último log) e tabela de dados.
+     Exibe título, caixas de info (total + último log), tabela de dados
+     e formulário de adição.
 -->
 
 
@@ -65,6 +66,73 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <!-- ── Formulário de adição ── -->
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Adicionar paciente
+        </button>
+
+        <div class="form-body">
+            <form>
+
+                <div class="form-subtitle">Informações pessoais</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" name="nome" placeholder="Nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="cpf">CPF</label>
+                        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="data_nascimento">Data de nascimento</label>
+                        <input type="date" id="data_nascimento" name="data_nascimento">
+                    </div>
+                    <div class="form-group">
+                        <label for="endereco">Endereço</label>
+                        <input type="text" id="endereco" name="endereco" placeholder="Endereço completo">
+                    </div>
+                </div>
+
+                <div class="form-subtitle">Informações do paciente</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="grupo_sanguineo">Grupo sanguíneo</label>
+                        <select id="grupo_sanguineo" name="grupo_sanguineo">
+                            <option value="">Selecione</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_convenio">Número do convênio</label>
+                        <input type="text" id="num_convenio" name="num_convenio" placeholder="CONVENIO-00000">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn--primary">Cadastrar</button>
+                </div>
+
+            </form>
+        </div>
     </div>
 
 {% endblock %}

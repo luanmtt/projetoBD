@@ -46,7 +46,15 @@
         <div class="navbar__inner">
             <!-- ── Logo / nome do sistema ── -->
             <a href="{{ url_for('home.index') }}" class="navbar__brand">
-                <span class="navbar__icon">🏥</span>
+                <svg class="navbar__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 21h18"/>
+                    <path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/>
+                    <path d="M9 21v-6h6v6"/>
+                    <path d="M9 7h1"/>
+                    <path d="M14 7h1"/>
+                    <path d="M9 11h1"/>
+                    <path d="M14 11h1"/>
+                </svg>
                 <span class="navbar__title">HospitalBD</span>
             </a>
 
@@ -57,6 +65,7 @@
                 <li><a href="{{ url_for('profissionais.index') }}" class="navbar__link">Profissionais</a></li>
                 <li><a href="{{ url_for('atendimentos.index') }}" class="navbar__link">Atendimentos</a></li>
                 <li><a href="{{ url_for('plantoes.index') }}" class="navbar__link">Plantões</a></li>
+                <li><a href="{{ url_for('analytics.index') }}" class="navbar__link">Analytics</a></li>
             </ul>
         </div>
     </nav>

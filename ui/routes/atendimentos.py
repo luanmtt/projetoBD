@@ -79,11 +79,32 @@ def index():
             .first()
         )
 
+        lista_pacientes = (
+            session.query(Paciente.id_paciente, Paciente.nome)
+            .order_by(Paciente.nome)
+            .all()
+        )
+
+        lista_residentes = (
+            session.query(Residente.id_residente, Residente.nome)
+            .order_by(Residente.nome)
+            .all()
+        )
+
+        lista_preceptores = (
+            session.query(Preceptor.id_preceptor, Preceptor.nome)
+            .order_by(Preceptor.nome)
+            .all()
+        )
+
     return render_template(
         "atendimentos.html",
         total=total,
         atendimentos=atendimentos,
         ultimo_log=ultimo_log,
+        lista_pacientes=lista_pacientes,
+        lista_residentes=lista_residentes,
+        lista_preceptores=lista_preceptores,
     )
 
 
