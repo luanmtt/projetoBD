@@ -1,10 +1,10 @@
-# seed.py
 from datetime import date, datetime
 from decimal import Decimal
 from database import SessionLocal, engine, Base
 from models import (
     Paciente, Preceptor, Residente, Unidade, Atendimento, 
-    NivelRisco, Procedimento, ProcedimentoRealizado, Alergia
+    NivelRisco, Procedimento, ProcedimentoRealizado, Alergia,
+    Plantao, Escala, Internacao, Auditoria_atendimento  # Novas classes importadas
 )
 
 def popular_banco():
@@ -15,6 +15,7 @@ def popular_banco():
         if session.query(Paciente).first():
             print("O banco já possui dados populados.")
             return
+
         # 1. Pacientes 
         pacientes = [
             Paciente(
@@ -137,6 +138,7 @@ def popular_banco():
             Atendimento(id_atendimento=11, id_paciente=5, id_residente=15, id_preceptor=6, data_hora=datetime(2026, 6, 5, 16, 0), duracao_minutos=Decimal('30.00')),
         ]
         session.add_all(atendimentos)
+        session.flush()
 
         # 6. Níveis de Risco
         riscos = [
@@ -155,6 +157,7 @@ def popular_banco():
             Procedimento(id_procedimento=5, codigo='PROC-0005', nome='Punção', tempo_medio_minutos=Decimal('15.00'), id_nivel_risco=2),
         ]
         session.add_all(procedimentos)
+        session.flush()
 
         # 8. Procedimentos Realizados
         procedimentos_realizados = [
@@ -180,5 +183,57 @@ def popular_banco():
             Alergia(id_alergia=50, id_pessoa=5, tipo_alergia='Poeira'),
         ]
         session.add_all(alergias)
+
+        # 10. Plantões
+        plantoes = [
+            Plantao(id_plantao=1, id_preceptor=6, id_unidade=1, dia_semana=date(2026, 6, 1), turno='manhã'),
+            Plantao(id_plantao=2, id_preceptor=7, id_unidade=2, dia_semana=date(2026, 6, 1), turno='tarde'),
+            Plantao(id_plantao=3, id_preceptor=8, id_unidade=3, dia_semana=date(2026, 6, 2), turno='noite'),
+            Plantao(id_plantao=4, id_preceptor=9, id_unidade=1, dia_semana=date(2026, 6, 3), turno='manhã'),
+            Plantao(id_plantao=5, id_preceptor=10, id_unidade=2, dia_semana=date(2026, 6, 3), turno='tarde'),
+        ]
+        session.add_all(plantoes)
+        session.flush()
+
+        # 11. Escalas 
+        escalas = [
+            Escala(id_escala=1, id_plantao=1, id_residente=11),
+            Escala(id_escala=2, id_plantao=1, id_residente=12),
+            Escala(id_escala=3, id_plantao=2, id_residente=13),
+            Escala(id_escala=4, id_plantao=3, id_residente=14),
+            Escala(id_escala=5, id_plantao=4, id_residente=15),
+        ]
+        session.add_all(escalas)
+
+        # 12. Internações 
+        internacoes = [
+            Internacao(id_internacao=1, id_paciente=1, data_hora_entrada=datetime(2026, 5, 20, 14, 0), data_hora_saida=datetime(2026, 5, 25, 10, 0)),
+            Internacao(id_internacao=2, id_paciente=2, data_hora_entrada=datetime(2026, 6, 1, 8, 0), data_hora_saida=datetime(2026, 6, 10, 18, 0)),  # Alterado de None para datetime
+            Internacao(id_internacao=3, id_paciente=3, data_hora_entrada=datetime(2026, 6, 2, 11, 30), data_hora_saida=datetime(2026, 6, 4, 16, 0)),
+        ]
+        session.add_all(internacoes)
+
+        # 13. Auditorias de Atendimento 
+        auditorias = [
+            Auditoria_atendimento(
+                id_auditoria=1,
+                id_atendimento=10,
+                data_hora=datetime(2026, 6, 1, 8, 30),
+                operacao='INSERT',
+                usuario='sistema_recepcao',
+                dados_novos={'id_atendimento': 10, 'id_paciente': 1, 'id_residente': 11, 'duracao_minutos': 30.0},
+                dados_antigos=None
+            ),
+            Auditoria_atendimento(
+                id_auditoria=2,
+                id_atendimento=20,
+                data_hora=datetime(2026, 6, 1, 9, 30),
+                operacao='UPDATE',
+                usuario='dr_marcelo',
+                dados_novos={'duracao_minutos': 45.0},
+                dados_antigos={'duracao_minutos': 30.0}
+            ),
+        ]
+        session.add_all(auditorias)
 
         session.commit()
