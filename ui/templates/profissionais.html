@@ -2,7 +2,8 @@
      PROFISSIONAIS.HTML — LISTAGEM DE PROFISSIONAIS
 
      Herda de base.html.
-     Exibe título, caixas de info (total + último log) e tabela de dados.
+     Exibe título, caixas de info (total + último log), tabela de dados
+     e formulário de adição.
 -->
 
 
@@ -69,6 +70,95 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <!-- ── Formulário de adição ── -->
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Adicionar profissional
+        </button>
+
+        <div class="form-body">
+            <form>
+
+                <div class="form-subtitle">Informações pessoais</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" name="nome" placeholder="Nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label for="cpf">CPF</label>
+                        <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00">
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="data_nascimento">Data de nascimento</label>
+                        <input type="date" id="data_nascimento" name="data_nascimento">
+                    </div>
+                    <div class="form-group">
+                        <label for="endereco">Endereço</label>
+                        <input type="text" id="endereco" name="endereco" placeholder="Endereço completo">
+                    </div>
+                </div>
+
+                <div class="form-subtitle">Informações do profissional</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="especialidade">Especialidade</label>
+                        <input type="text" id="especialidade" name="especialidade" placeholder="Ex: Cardiologia">
+                    </div>
+                    <div class="form-group">
+                        <label for="crm">CRM</label>
+                        <input type="text" id="crm" name="crm" placeholder="AA-000000">
+                    </div>
+                    <div class="form-group">
+                        <label for="data_admissao">Data de admissão</label>
+                        <input type="date" id="data_admissao" name="data_admissao">
+                    </div>
+                    <div class="form-group">
+                        <label for="tipo_profissional">Tipo</label>
+                        <select id="tipo_profissional" name="tipo_profissional" onchange="toggleProfissionalTipo(this)">
+                            <option value="">Selecione</option>
+                            <option value="preceptor">Preceptor</option>
+                            <option value="residente">Residente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="campos-preceptor" class="form-group--hidden">
+                    <div class="form-subtitle">Informações do preceptor</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="titulacao">Titulação</label>
+                            <input type="text" id="titulacao" name="titulacao" placeholder="Ex: Doutor, Mestre">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="campos-residente" class="form-group--hidden">
+                    <div class="form-subtitle">Informações do residente</div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="ano_residencia">Ano de residência</label>
+                            <input type="number" id="ano_residencia" name="ano_residencia" placeholder="Ex: 1" min="1">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn--primary">Cadastrar</button>
+                </div>
+
+            </form>
+        </div>
     </div>
 
 {% endblock %}
