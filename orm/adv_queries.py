@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session, selectinload
 from sqlalchemy import select, func, case
-from models import Preceptor, Atendimento, Paciente, ProcedimentoRealizado, Procedimento, Pessoa, Residente, NivelRisco
+from orm.models import Preceptor, Atendimento, Paciente, ProcedimentoRealizado, Procedimento, Pessoa, Residente, NivelRisco
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

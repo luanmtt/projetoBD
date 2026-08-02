@@ -36,7 +36,7 @@ def create_app():
         template_folder=os.path.join(ui_dir, "templates"),
         static_folder=os.path.join(ui_dir, "static"),
     )
-    
+
 
     ''' ──────────────────────────────────────────────────────────────────────────────────────────────────
      • Blueprints (rotas): Cada arquivo em routes/ registra seu prefixo aqui.
@@ -56,6 +56,12 @@ def create_app():
 
     from routes.plantoes import bp as plantoes_bp
     app.register_blueprint(plantoes_bp)
+    
+    from routes.procedimentos import bp as procedimentos_bp
+    app.register_blueprint(procedimentos_bp)
+
+    from routes.analytics import bp as analytics_bp
+    app.register_blueprint(analytics_bp)
 
     return app
 

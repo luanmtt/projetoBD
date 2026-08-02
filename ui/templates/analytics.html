@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Analytics — HospitalBD{% endblock %}
+{% block content %}
+
+    <div class="page-header">
+        <h1 class="page-header__title">Analytics: Risco por Residente</h1>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Residente</th>
+                    <th>Total de Procedimentos</th>
+                    <th>Taxa de Alto Risco (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in estatisticas %}
+                <tr>
+                    <td>{{ stat.nome_residente }}</td>
+                    <td>{{ stat.total }}</td>
+                    <!-- O |format formata o número para ter apenas 2 casas decimais -->
+                    <td>{{ "%.2f"|format(stat.percentual_alto_risco or 0) }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
