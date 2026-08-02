@@ -633,6 +633,31 @@ RESPONSIVO: TABLET E CELULAR
 
 
 /* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   FLASH MESSAGES
+*/
+
+.flash {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.flash--success {
+    background-color: #e6f4ea;
+    color: #1a5c2a;
+    border: 1px solid #a3d9b1;
+}
+
+.flash--error {
+    background-color: #fdecea;
+    color: #890a23;
+    border: 1px solid #f5c6cb;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
    FORMULÁRIO DE ADIÇÃO
    Seção expansível abaixo da tabela.
 */

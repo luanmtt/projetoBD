@@ -1,0 +1,54 @@
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     UNIDADES.HTML — LISTAGEM DE UNIDADES
+
+     Herda de base.html.
+     Exibe unidades e tempo médio de espera global.
+-->
+
+
+{% extends "base.html" %}
+{% block title %}Unidades — HospitalBD{% endblock %}
+{% block content %}
+
+    <div class="page-header">
+        <h1 class="page-header__title">Unidades</h1>
+
+        <div class="page-header__info">
+            <div class="info-box">
+                <div class="info-box__label">Cadastradas</div>
+                <div class="info-box__value">{{ total }}</div>
+            </div>
+            <div class="info-box">
+                <div class="info-box__label">Tempo médio de espera</div>
+                <div class="info-box__value">{{ tempo_medio or '—' }} min</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Tipo</th>
+                    <th>Capacidade de leitos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in unidades %}
+                <tr>
+                    <td>{{ u.id_unidade }}</td>
+                    <td>{{ u.nome }}</td>
+                    <td>{{ u.tipo }}</td>
+                    <td>{{ u.capacidade_leitos }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->

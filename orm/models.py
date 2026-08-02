@@ -8,7 +8,10 @@ from sqlalchemy import (
 
 from sqlalchemy import JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from orm.database import Base
+try:
+    from orm.database import Base
+except ImportError:
+    from database import Base
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

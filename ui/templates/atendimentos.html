@@ -116,7 +116,7 @@
         </button>
 
         <div class="form-body">
-            <form>
+            <form method="POST">
 
                 <div class="form-subtitle">Informações do atendimento</div>
                 <div class="form-grid">
@@ -157,8 +157,25 @@
                     </div>
                 </div>
 
+                <div class="form-subtitle">Procedimento principal</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="id_procedimento">Procedimento</label>
+                        <select id="id_procedimento" name="id_procedimento">
+                            <option value="">Selecione</option>
+                            {% for proc in lista_procedimentos %}
+                            <option value="{{ proc.id_procedimento }}">{{ proc.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="proc_quantidade">Quantidade</label>
+                        <input type="number" id="proc_quantidade" name="proc_quantidade" value="1" min="1">
+                    </div>
+                </div>
+
                 <div class="form-actions">
-                    <button type="button" class="btn btn--primary">Cadastrar</button>
+                    <button type="submit" class="btn btn--primary">Cadastrar</button>
                 </div>
 
             </form>

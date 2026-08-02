@@ -37,6 +37,8 @@ def create_app():
         static_folder=os.path.join(ui_dir, "static"),
     )
 
+    app.secret_key = "hospitalbd-chave-secreta"
+
 
     ''' ──────────────────────────────────────────────────────────────────────────────────────────────────
      • Blueprints (rotas): Cada arquivo em routes/ registra seu prefixo aqui.
@@ -56,6 +58,9 @@ def create_app():
 
     from routes.plantoes import bp as plantoes_bp
     app.register_blueprint(plantoes_bp)
+
+    from routes.unidades import bp as unidades_bp
+    app.register_blueprint(unidades_bp)
     
     from routes.procedimentos import bp as procedimentos_bp
     app.register_blueprint(procedimentos_bp)

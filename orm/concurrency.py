@@ -1,21 +1,29 @@
 import threading
 import time
 from datetime import datetime
+from pathlib import Path
 
 from sqlalchemy import select, delete, text
 from sqlalchemy.exc import IntegrityError
 
-from orm.database import SessionLocal
-from orm.models import Escala, Plantao
+from database import SessionLocal
+from models import Escala, Plantao
 
 
 ID_PLANTAO_DEMO = 1
-ID_RESIDENTE_DEMO = 2
+ID_RESIDENTE_DEMO = 11
+
+LOG_FILE = Path(__file__).parent / "concurrency_log.txt"
 
 
 def log(nome_thread: str, mensagem: str) -> None:
+
     agora = datetime.now().strftime("%H:%M:%S.%f")[:-3]
-    print(f"[{agora}] [{nome_thread:<10}] {mensagem}")
+    linha = f"[{agora}] [{nome_thread:<10}] {mensagem}"
+    print(linha)
+
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(linha + "\n")
 
 
 def _limpar_escala_demo() -> None:
@@ -133,9 +141,12 @@ def _otimista(nome_thread: str, barreira: threading.Barrier, max_tentativas: int
 # ──────────────────────────────────────────────────────────────────────────────────────────────────
 
 def rodar_cenario(titulo: str, funcao_tentativa) -> None:
-    print("\n" + "═" * 100)
-    print(titulo)
-    print("═" * 100)
+    separador = "\n" + "═" * 100
+    bloco = f"{separador}\n{titulo}\n{'═' * 100}"
+    print(bloco)
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(bloco + "\n")
+
     _limpar_escala_demo()
 
     barreira = threading.Barrier(2)
@@ -156,10 +167,14 @@ def rodar_cenario(titulo: str, funcao_tentativa) -> None:
         ).all()
 
     status = "consistente" if len(total) == 1 else "inconsistente"
-    print(f"\n>> resultado final: {len(total)} linha(s) de escala para o residente "
-          f"{ID_RESIDENTE_DEMO} no plantão {ID_PLANTAO_DEMO} (esperado: 1) — {status}")
+    resultado = f"\n>> resultado final: {len(total)} linha(s) de escala para o residente {ID_RESIDENTE_DEMO} no plantão {ID_PLANTAO_DEMO} (esperado: 1) — {status}"
+    print(resultado)
+    with open(LOG_FILE, "a", encoding="utf-8") as f:
+        f.write(resultado + "\n")
 
 
 if __name__ == "__main__":
+    LOG_FILE.write_text("", encoding="utf-8")
     rodar_cenario("LOCK PESSIMISTA", _pessimista)
     rodar_cenario("LOCK OTIMISTA", _otimista)
+    print(f"\nLog exportado para: {LOG_FILE}")

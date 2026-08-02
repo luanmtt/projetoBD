@@ -65,6 +65,100 @@
         </table>
     </div>
 
+    <!-- ── Tabela de escalas ── -->
+
+    <h2 class="section-title" style="margin-top: 2rem;">Escalas</h2>
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Residente</th>
+                    <th>Preceptor</th>
+                    <th>Unidade</th>
+                    <th>Dia</th>
+                    <th>Turno</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in escalas %}
+                <tr>
+                    <td>{{ e.id_escala }}</td>
+                    <td>{{ e.nome_residente }}</td>
+                    <td>{{ e.nome_preceptor }}</td>
+                    <td>{{ e.nome_unidade }}</td>
+                    <td>{{ e.dia_semana.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ e.turno }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ── Formulário de reajuste de escala ── -->
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Reajustar escala
+        </button>
+
+        <div class="form-body">
+            <form method="POST">
+
+                <div class="form-subtitle">Dados atuais</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="id_residente">Residente</label>
+                        <select id="id_residente" name="id_residente">
+                            <option value="">Selecione</option>
+                            {% for r in lista_residentes %}
+                            <option value="{{ r.id_residente }}">{{ r.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dia_antigo">Dia atual</label>
+                        <input type="date" id="dia_antigo" name="dia_antigo">
+                    </div>
+                    <div class="form-group">
+                        <label for="turno_antigo">Turno atual</label>
+                        <select id="turno_antigo" name="turno_antigo">
+                            <option value="">Selecione</option>
+                            <option value="manhã">Manhã</option>
+                            <option value="tarde">Tarde</option>
+                            <option value="noite">Noite</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-subtitle">Novos dados</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="dia_novo">Novo dia</label>
+                        <input type="date" id="dia_novo" name="dia_novo">
+                    </div>
+                    <div class="form-group">
+                        <label for="turno_novo">Novo turno</label>
+                        <select id="turno_novo" name="turno_novo">
+                            <option value="">Selecione</option>
+                            <option value="manhã">Manhã</option>
+                            <option value="tarde">Tarde</option>
+                            <option value="noite">Noite</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary">Reajustar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
 {% endblock %}
 
 

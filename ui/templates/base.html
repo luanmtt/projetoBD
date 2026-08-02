@@ -65,7 +65,7 @@
                 <li><a href="{{ url_for('profissionais.index') }}" class="navbar__link">Profissionais</a></li>
                 <li><a href="{{ url_for('atendimentos.index') }}" class="navbar__link">Atendimentos</a></li>
                 <li><a href="{{ url_for('plantoes.index') }}" class="navbar__link">Plantões</a></li>
-                <li><a href="{{ url_for('analytics.index') }}" class="navbar__link">Analytics</a></li>
+                <li><a href="{{ url_for('unidades.index') }}" class="navbar__link">Unidades</a></li>
             </ul>
         </div>
     </nav>
@@ -77,6 +77,13 @@
     -->
 
     <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash flash--{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         {% block content %}{% endblock %}
     </main>
 

@@ -3,16 +3,20 @@
 atendimentos.py:
 
 ROTAS DA PÁGINA DE ATENDIMENTOS, Blueprint "atendimentos".
-Lista todos os atendimentos com nomes de paciente, residente e preceptor.
+Lista todos os atendimentos e permite cadastro via POST
+usando registrar_atendimento_completo de orm/procedures.py.
 
 '''
 
-from flask import Blueprint, render_template
+from decimal import Decimal
+from datetime import datetime
+from flask import Blueprint, render_template, request, flash
 from orm.database import SessionLocal
 from orm.models import (
-    Atendimento, Paciente, Residente, Preceptor,
-    Auditoria_atendimento, ProcedimentoRealizado, Procedimento,
+    Atendimento, Paciente, Residente, Preceptor, Procedimento,
+    Auditoria_atendimento, ProcedimentoRealizado,
 )
+from orm.procedures import registrar_atendimento_completo
 from sqlalchemy import func
 
 bp = Blueprint("atendimentos", __name__)
@@ -21,9 +25,40 @@ bp = Blueprint("atendimentos", __name__)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 
-@bp.route("/atendimentos")
+@bp.route("/atendimentos", methods=["GET", "POST"])
 def index():
     with SessionLocal() as session:
+        if request.method == "POST":
+            try:
+                data_hora = datetime.strptime(request.form["data_hora"], "%Y-%m-%dT%H:%M")
+                duracao = Decimal(request.form["duracao_minutos"])
+
+                procedimentos = [{
+                    "id_procedimento": int(request.form["id_procedimento"]),
+                    "quantidade": int(request.form["proc_quantidade"]),
+                    "observacao": None,
+                    "data_hora_inicio": data_hora,
+                    "tempo_real_minutos": duracao,
+                }]
+
+                registrar_atendimento_completo(
+                    session=session,
+                    id_paciente=int(request.form["id_paciente"]),
+                    id_residente=int(request.form["id_residente"]),
+                    id_preceptor=int(request.form["id_preceptor"]),
+                    data_hora=data_hora,
+                    duracao_minutos=duracao,
+                    procedimentos=procedimentos,
+                )
+                session.commit()
+                flash("Atendimento cadastrado com sucesso!", "success")
+            except ValueError as e:
+                session.rollback()
+                flash(str(e), "error")
+            except Exception as e:
+                session.rollback()
+                flash(f"Erro: {e}", "error")
+
         total = session.query(func.count(Atendimento.id_atendimento)).scalar()
 
         rows = (
@@ -97,6 +132,12 @@ def index():
             .all()
         )
 
+        lista_procedimentos = (
+            session.query(Procedimento.id_procedimento, Procedimento.nome)
+            .order_by(Procedimento.nome)
+            .all()
+        )
+
     return render_template(
         "atendimentos.html",
         total=total,
@@ -105,6 +146,7 @@ def index():
         lista_pacientes=lista_pacientes,
         lista_residentes=lista_residentes,
         lista_preceptores=lista_preceptores,
+        lista_procedimentos=lista_procedimentos,
     )
 
 

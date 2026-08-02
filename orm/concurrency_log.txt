@@ -1,0 +1,27 @@
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+LOCK PESSIMISTA
+════════════════════════════════════════════════════════════════════════════════════════════════════
+[19:56:25.325] [Thread-A  ] esperando a outra thread para tentarmos o lock juntas...
+[19:56:25.325] [Thread-B  ] esperando a outra thread para tentarmos o lock juntas...
+[19:56:25.325] [Thread-B  ] tentando obter lock (SELECT ... FOR UPDATE) no plantão...
+[19:56:25.325] [Thread-A  ] tentando obter lock (SELECT ... FOR UPDATE) no plantão...
+[19:56:25.329] [Thread-B  ]  lock obtido com sucesso.
+[19:56:25.840] [Thread-A  ]  lock obtido com sucesso.
+[19:56:25.839] [Thread-B  ]  INSERT feito com sucesso, lock liberado no commit.
+[19:56:25.841] [Thread-A  ]  outra transação já escalou esse residente enquanto eu esperava o lock. Abortando.
+
+>> resultado final: 1 linha(s) de escala para o residente 11 no plantão 1 (esperado: 1) — consistente
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+LOCK OTIMISTA
+════════════════════════════════════════════════════════════════════════════════════════════════════
+[19:56:25.846] [Thread-A  ] tentativa 1: li o plantão com xmin=2437
+[19:56:25.847] [Thread-B  ] tentativa 1: li o plantão com xmin=2437
+[19:56:25.849] [Thread-B  ]  validação otimista aceita
+[19:56:25.851] [Thread-B  ]  commit final ok.
+[19:56:25.852] [Thread-A  ]  conflito otimista: outro processo alterou o plantão (xmin desatualizado). Tentando de novo...
+[19:56:25.903] [Thread-A  ] tentativa 2: li o plantão com xmin=2443
+[19:56:25.904] [Thread-A  ]  residente já escalado (visto na releitura). Abortando.
+
+>> resultado final: 1 linha(s) de escala para o residente 11 no plantão 1 (esperado: 1) — consistente
