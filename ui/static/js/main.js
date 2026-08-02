@@ -86,6 +86,42 @@ function toggleDetail(btn) {
 }
 
 
+/**
+ * ────────────────────────────────────────────────────────────────
+ * toggleForm
+ *
+ * Expande ou colapsa o formulário de adição abaixo da tabela.
+ * Alterna a classe .is-open no botão e no corpo do formulário.
+ */
+function toggleForm(btn) {
+    var body = btn.nextElementSibling;
+    btn.classList.toggle('is-open');
+    body.classList.toggle('is-open');
+}
+
+
+/**
+ * ────────────────────────────────────────────────────────────────
+ * toggleProfissionalTipo
+ *
+ * Mostra/esconde os campos de Preceptor ou Residente
+ * baseado no tipo selecionado no dropdown.
+ */
+function toggleProfissionalTipo(select) {
+    var camposPreceptor = document.getElementById('campos-preceptor');
+    var camposResidente = document.getElementById('campos-residente');
+
+    if (camposPreceptor) camposPreceptor.classList.add('form-group--hidden');
+    if (camposResidente) camposResidente.classList.add('form-group--hidden');
+
+    if (select.value === 'preceptor' && camposPreceptor) {
+        camposPreceptor.classList.remove('form-group--hidden');
+    } else if (select.value === 'residente' && camposResidente) {
+        camposResidente.classList.remove('form-group--hidden');
+    }
+}
+
+
 // ────────────────────────────────────────────────────────────────
 // INIT: roda quando a página carrega
 

@@ -2,7 +2,8 @@
      ATENDIMENTOS.HTML — LISTAGEM DE ATENDIMENTOS
 
      Herda de base.html.
-     Exibe título, caixas de info (total + último log) e tabela de dados.
+     Exibe título, caixas de info (total + último log), tabela de dados
+     e formulário de adição.
      Cada linha pode expandir pra mostrar procedimentos realizados.
 -->
 
@@ -102,6 +103,66 @@
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <!-- ── Formulário de adição ── -->
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Adicionar atendimento
+        </button>
+
+        <div class="form-body">
+            <form>
+
+                <div class="form-subtitle">Informações do atendimento</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="id_paciente">Paciente</label>
+                        <select id="id_paciente" name="id_paciente">
+                            <option value="">Selecione</option>
+                            {% for p in lista_pacientes %}
+                            <option value="{{ p.id_paciente }}">{{ p.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_residente">Residente</label>
+                        <select id="id_residente" name="id_residente">
+                            <option value="">Selecione</option>
+                            {% for r in lista_residentes %}
+                            <option value="{{ r.id_residente }}">{{ r.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_preceptor">Preceptor</label>
+                        <select id="id_preceptor" name="id_preceptor">
+                            <option value="">Selecione</option>
+                            {% for pr in lista_preceptores %}
+                            <option value="{{ pr.id_preceptor }}">{{ pr.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_hora">Data e hora</label>
+                        <input type="datetime-local" id="data_hora" name="data_hora">
+                    </div>
+                    <div class="form-group">
+                        <label for="duracao_minutos">Duração (minutos)</label>
+                        <input type="number" id="duracao_minutos" name="duracao_minutos" placeholder="Ex: 30" min="0" step="0.01">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn--primary">Cadastrar</button>
+                </div>
+
+            </form>
+        </div>
     </div>
 
 {% endblock %}
