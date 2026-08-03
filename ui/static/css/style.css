@@ -658,6 +658,45 @@ RESPONSIVO: TABLET E CELULAR
 
 
 /* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   BOTÃO DE DELETE
+*/
+
+.delete-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--danger);
+    background-color: var(--white);
+    color: var(--danger);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, color 0.2s;
+    padding: 0;
+}
+
+.delete-btn:hover {
+    background-color: var(--danger);
+    color: var(--white);
+}
+
+.delete-form {
+    display: inline;
+}
+
+.delete-legend {
+    font-size: 0.8rem;
+    color: var(--fg-light);
+    font-weight: 400;
+    align-self: center;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
    FORMULÁRIO DE ADIÇÃO
    Seção expansível abaixo da tabela.
 */

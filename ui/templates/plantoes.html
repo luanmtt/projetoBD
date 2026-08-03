@@ -17,22 +17,13 @@
 
         <div class="page-header__info">
 
+            <!-- ── Legenda ── -->
+            <span class="delete-legend">Clique no <strong>✕</strong> para remover</span>
+
             <!-- ── Total cadastrados ── -->
             <div class="info-box">
                 <div class="info-box__label">Cadastrados</div>
                 <div class="info-box__value">{{ total }}</div>
-            </div>
-
-            <!-- ── Último log ── -->
-            <div class="info-box info-box--log">
-                <div class="info-box__label">Último log</div>
-                {% if ultimo_log %}
-                    <select class="info-box__dropdown">
-                        <option>{{ ultimo_log.data_hora.strftime('%d/%m/%Y %H:%M') }} — {{ ultimo_log.operacao }} por {{ ultimo_log.usuario }}</option>
-                    </select>
-                {% else %}
-                    <div class="info-box__empty">Nenhum log disponível</div>
-                {% endif %}
             </div>
 
         </div>
@@ -49,6 +40,7 @@
                     <th>Unidade</th>
                     <th>Dia</th>
                     <th>Turno</th>
+                    <th style="width: 40px;"></th>
                 </tr>
             </thead>
             <tbody>
@@ -59,6 +51,11 @@
                     <td>{{ pl.nome_unidade }}</td>
                     <td>{{ pl.dia_semana.strftime('%d/%m/%Y') }}</td>
                     <td>{{ pl.turno }}</td>
+                    <td>
+                        <form class="delete-form" method="POST" action="{{ url_for('plantoes.delete_plantao', id=pl.id_plantao) }}" onsubmit="return confirm('Tem certeza?')">
+                            <button type="submit" class="delete-btn">✕</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -78,6 +75,7 @@
                     <th>Unidade</th>
                     <th>Dia</th>
                     <th>Turno</th>
+                    <th style="width: 40px;"></th>
                 </tr>
             </thead>
             <tbody>
@@ -89,10 +87,104 @@
                     <td>{{ e.nome_unidade }}</td>
                     <td>{{ e.dia_semana.strftime('%d/%m/%Y') }}</td>
                     <td>{{ e.turno }}</td>
+                    <td>
+                        <form class="delete-form" method="POST" action="{{ url_for('plantoes.delete_escala', id=e.id_escala) }}" onsubmit="return confirm('Tem certeza?')">
+                            <button type="submit" class="delete-btn">✕</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+
+    <!-- ── Formulário de reajuste de escala ── -->
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Adicionar plantão
+        </button>
+
+        <div class="form-body">
+            <form method="POST" action="{{ url_for('plantoes.add_plantao') }}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="pl_id_preceptor">Preceptor</label>
+                        <select id="pl_id_preceptor" name="id_preceptor">
+                            <option value="">Selecione</option>
+                            {% for pr in lista_preceptores %}
+                            <option value="{{ pr.id_preceptor }}">{{ pr.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pl_id_unidade">Unidade</label>
+                        <select id="pl_id_unidade" name="id_unidade">
+                            <option value="">Selecione</option>
+                            {% for u in lista_unidades %}
+                            <option value="{{ u.id_unidade }}">{{ u.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pl_dia">Dia</label>
+                        <input type="date" id="pl_dia" name="dia_semana">
+                    </div>
+                    <div class="form-group">
+                        <label for="pl_turno">Turno</label>
+                        <select id="pl_turno" name="turno">
+                            <option value="">Selecione</option>
+                            <option value="manhã">Manhã</option>
+                            <option value="tarde">Tarde</option>
+                            <option value="noite">Noite</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Adicionar escala
+        </button>
+
+        <div class="form-body">
+            <form method="POST" action="{{ url_for('plantoes.add_escala') }}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="es_id_plantao">Plantão</label>
+                        <select id="es_id_plantao" name="id_plantao">
+                            <option value="">Selecione</option>
+                            {% for pl in plantoes %}
+                            <option value="{{ pl.id_plantao }}">#{{ pl.id_plantao }} — {{ pl.nome_unidade }} — {{ pl.dia_semana.strftime('%d/%m/%Y') }} — {{ pl.turno }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="es_id_residente">Residente</label>
+                        <select id="es_id_residente" name="id_residente">
+                            <option value="">Selecione</option>
+                            {% for r in lista_residentes %}
+                            <option value="{{ r.id_residente }}">{{ r.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- ── Formulário de reajuste de escala ── -->

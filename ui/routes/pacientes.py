@@ -8,15 +8,32 @@ Lista todos os pacientes e permite cadastro via POST.
 '''
 
 from datetime import datetime
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from orm.database import SessionLocal
-from orm.models import Paciente
+from orm.models import Paciente, Internacao
 from sqlalchemy import func, text
 
 bp = Blueprint("pacientes", __name__)
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+@bp.route("/pacientes/delete/<int:id>", methods=["POST"])
+def delete(id):
+    with SessionLocal() as session:
+        try:
+            paciente = session.get(Paciente, id)
+            if paciente:
+                session.delete(paciente)
+                session.commit()
+                flash("Paciente removido com sucesso!", "success")
+            else:
+                flash("Paciente não encontrado.", "error")
+        except Exception as e:
+            session.rollback()
+            flash(f"Erro ao remover: {e}", "error")
+    return redirect(url_for("pacientes.index"))
 
 
 @bp.route("/pacientes", methods=["GET", "POST"])
@@ -30,8 +47,6 @@ def index():
             endereco = request.form.get("endereco", "").strip()
             grupo = request.form.get("grupo_sanguineo", "").strip()
             convenio = request.form.get("num_convenio", "").strip()
-
-            print(f"[DEBUG POST] nome={nome!r} cpf={cpf!r} endereco={endereco!r}")
 
             if not all([nome, cpf, telefone, data_nasc, endereco, grupo, convenio]):
                 flash("Preencha todos os campos.", "error")
@@ -60,13 +75,18 @@ def index():
             .all()
         )
 
-        ultimo_log = None
+        internados = set(
+            row[0] for row in
+            session.query(Internacao.id_paciente)
+            .filter(Internacao.data_hora_saida.is_(None))
+            .all()
+        )
 
     return render_template(
         "pacientes.html",
         total=total,
         pacientes=pacientes,
-        ultimo_log=ultimo_log,
+        internados=internados,
     )
 
 

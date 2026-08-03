@@ -10,11 +10,11 @@ usando registrar_atendimento_completo de orm/procedures.py.
 
 from decimal import Decimal
 from datetime import datetime
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from orm.database import SessionLocal
 from orm.models import (
-    Atendimento, Paciente, Residente, Preceptor, Procedimento,
-    Auditoria_atendimento, ProcedimentoRealizado,
+    Atendimento, Paciente, Residente, Preceptor, Unidade, Procedimento,
+    ProcedimentoRealizado,
 )
 from orm.procedures import registrar_atendimento_completo
 from sqlalchemy import func
@@ -23,6 +23,23 @@ bp = Blueprint("atendimentos", __name__)
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+@bp.route("/atendimentos/delete/<int:id>", methods=["POST"])
+def delete(id):
+    with SessionLocal() as session:
+        try:
+            atendimento = session.get(Atendimento, id)
+            if atendimento:
+                session.delete(atendimento)
+                session.commit()
+                flash("Atendimento removido com sucesso!", "success")
+            else:
+                flash("Atendimento não encontrado.", "error")
+        except Exception as e:
+            session.rollback()
+            flash(f"Erro ao remover: {e}", "error")
+    return redirect(url_for("atendimentos.index"))
 
 
 @bp.route("/atendimentos", methods=["GET", "POST"])
@@ -46,6 +63,7 @@ def index():
                     id_paciente=int(request.form["id_paciente"]),
                     id_residente=int(request.form["id_residente"]),
                     id_preceptor=int(request.form["id_preceptor"]),
+                    id_unidade=int(request.form["id_unidade"]),
                     data_hora=data_hora,
                     duracao_minutos=duracao,
                     procedimentos=procedimentos,
@@ -108,12 +126,6 @@ def index():
                 "procedimentos": proc_map.get(r.id_atendimento, []),
             })
 
-        ultimo_log = (
-            session.query(Auditoria_atendimento)
-            .order_by(Auditoria_atendimento.data_hora.desc())
-            .first()
-        )
-
         lista_pacientes = (
             session.query(Paciente.id_paciente, Paciente.nome)
             .order_by(Paciente.nome)
@@ -138,15 +150,21 @@ def index():
             .all()
         )
 
+        lista_unidades = (
+            session.query(Unidade.id_unidade, Unidade.nome)
+            .order_by(Unidade.nome)
+            .all()
+        )
+
     return render_template(
         "atendimentos.html",
         total=total,
         atendimentos=atendimentos,
-        ultimo_log=ultimo_log,
         lista_pacientes=lista_pacientes,
         lista_residentes=lista_residentes,
         lista_preceptores=lista_preceptores,
         lista_procedimentos=lista_procedimentos,
+        lista_unidades=lista_unidades,
     )
 
 

@@ -38,7 +38,7 @@ class Pessoa(Base):
 
     tipo_pessoa:    Mapped[str] = mapped_column(String(20))  # discriminador
  
-    alergias:       Mapped[List["Alergia"]] = relationship(back_populates="pessoa")
+    alergias:       Mapped[List["Alergia"]] = relationship(back_populates="pessoa", cascade="all, delete-orphan")
 
     __mapper_args__ = {
         "polymorphic_identity": "pessoa",
@@ -55,8 +55,8 @@ class Paciente(Pessoa):
                                                 default="NOMECONVENIO-00000"
                                                 )
 
-    atendimentos:   Mapped[List["Atendimento"]] = relationship(back_populates="paciente")
-    internacoes:    Mapped[List["Internacao"]] = relationship(back_populates="paciente")
+    atendimentos:   Mapped[List["Atendimento"]] = relationship(back_populates="paciente", cascade="all, delete-orphan")
+    internacoes:    Mapped[List["Internacao"]] = relationship(back_populates="paciente", cascade="all, delete-orphan")
  
     __mapper_args__ = {"polymorphic_identity": "paciente"}
 
@@ -80,10 +80,10 @@ class Preceptor(Profissional):
  
     id_preceptor:   Mapped[int] = mapped_column(ForeignKey("profissional.id_profissional", ondelete="CASCADE"), primary_key=True)
     titulacao:      Mapped[str] = mapped_column(String(20), nullable=False)
-    plantoes:       Mapped[List["Plantao"]] = relationship(back_populates="preceptor")
-  
+    plantoes:       Mapped[List["Plantao"]] = relationship(back_populates="preceptor", cascade="all, delete-orphan")
+   
     atendimentos_supervisionados: Mapped[List["Atendimento"]] = relationship(
-        back_populates="preceptor"
+        back_populates="preceptor", cascade="all, delete-orphan"
     )
 
     __mapper_args__ = {"polymorphic_identity": "preceptor"}
@@ -95,8 +95,8 @@ class Residente(Profissional):
     id_residente:   Mapped[int] = mapped_column(ForeignKey("profissional.id_profissional", ondelete="CASCADE"), primary_key=True)
     ano_residencia: Mapped[int] = mapped_column(Integer, nullable=False)
 
-    atendimentos_realizados: Mapped[List["Atendimento"]] = relationship(back_populates="residente")
-    escalas:        Mapped[List["Escala"]] = relationship(back_populates="residente")
+    atendimentos_realizados: Mapped[List["Atendimento"]] = relationship(back_populates="residente", cascade="all, delete-orphan")
+    escalas:        Mapped[List["Escala"]] = relationship(back_populates="residente", cascade="all, delete-orphan")
  
     __mapper_args__ = {"polymorphic_identity": "residente"}
     
@@ -132,6 +132,7 @@ class Atendimento(Base):
     id_paciente:    Mapped[int] = mapped_column(ForeignKey("paciente.id_paciente", ondelete="CASCADE"), nullable=False)
     id_residente:   Mapped[int] = mapped_column(ForeignKey("residente.id_residente", ondelete="CASCADE"), nullable=False)
     id_preceptor:   Mapped[int] = mapped_column(ForeignKey("preceptor.id_preceptor", ondelete="CASCADE"), nullable=False)
+    id_unidade:     Mapped[int] = mapped_column(ForeignKey("unidade.id_unidade", ondelete="CASCADE"), nullable=False)
     data_hora:      Mapped[date] = mapped_column(DateTime, nullable=False)
     duracao_minutos:Mapped[float] = mapped_column(Numeric(4,2), 
                                                   CheckConstraint("duracao_minutos >= 0"),
@@ -142,8 +143,9 @@ class Atendimento(Base):
     paciente: Mapped["Paciente"] = relationship(back_populates="atendimentos")
     residente: Mapped["Residente"] = relationship(back_populates="atendimentos_realizados")
     preceptor: Mapped["Preceptor"] = relationship(back_populates="atendimentos_supervisionados")
+    unidade: Mapped["Unidade"] = relationship()
 
-    procedimentos_realizados: Mapped[List["ProcedimentoRealizado"]] = relationship(back_populates="atendimento")
+    procedimentos_realizados: Mapped[List["ProcedimentoRealizado"]] = relationship(back_populates="atendimento", cascade="all, delete-orphan")
 
 
 class NivelRisco(Base):
@@ -168,7 +170,7 @@ class Procedimento(Base):
     tempo_medio_minutos: Mapped[float] = mapped_column(Numeric(4,2), nullable=False)
     media_tempo_procedimento: Mapped[Optional[float]] = mapped_column(Numeric(4,2))
 
-    realizacoes: Mapped[List["ProcedimentoRealizado"]] = relationship(back_populates="procedimento")
+    realizacoes: Mapped[List["ProcedimentoRealizado"]] = relationship(back_populates="procedimento", cascade="all, delete-orphan")
 
     __table_args__ = (
         CheckConstraint("tempo_medio_minutos >= 0"),
@@ -218,7 +220,7 @@ class Plantao(Base):
 
     preceptor: Mapped["Preceptor"] = relationship(back_populates="plantoes")
     unidade: Mapped["Unidade"] = relationship()
-    escalas: Mapped[List["Escala"]] = relationship(back_populates="plantao")
+    escalas: Mapped[List["Escala"]] = relationship(back_populates="plantao", cascade="all, delete-orphan")
 
     __table_args__ = (
         CheckConstraint("turno IN ('manhã', 'tarde', 'noite')"),

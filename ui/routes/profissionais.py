@@ -8,9 +8,9 @@ Lista todos os profissionais e permite cadastro via POST.
 '''
 
 from datetime import datetime
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from orm.database import SessionLocal
-from orm.models import Profissional, Preceptor, Residente
+from orm.models import Pessoa, Profissional, Preceptor, Residente
 from sqlalchemy import func, text, case, literal_column
 from sqlalchemy.orm import aliased
 
@@ -18,6 +18,23 @@ bp = Blueprint("profissionais", __name__)
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+@bp.route("/profissionais/delete/<int:id>", methods=["POST"])
+def delete(id):
+    with SessionLocal() as session:
+        try:
+            pessoa = session.get(Pessoa, id)
+            if pessoa:
+                session.delete(pessoa)
+                session.commit()
+                flash("Profissional removido com sucesso!", "success")
+            else:
+                flash("Profissional não encontrado.", "error")
+        except Exception as e:
+            session.rollback()
+            flash(f"Erro ao remover: {e}", "error")
+    return redirect(url_for("profissionais.index"))
 
 
 @bp.route("/profissionais", methods=["GET", "POST"])
@@ -104,13 +121,10 @@ def index():
             .all()
         )
 
-        ultimo_log = None
-
     return render_template(
         "profissionais.html",
         total=total,
         profissionais=rows,
-        ultimo_log=ultimo_log,
     )
 
 

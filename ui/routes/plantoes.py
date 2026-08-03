@@ -8,9 +8,9 @@ Lista todos os plantões e permite reajuste de escala via POST.
 '''
 
 from datetime import datetime
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from orm.database import SessionLocal
-from orm.models import Plantao, Preceptor, Unidade, Residente, Escala
+from orm.models import Plantao, Preceptor, Unidade, Residente, Escala, Escala
 from orm.procedures import reajustar_escala
 from sqlalchemy import func
 
@@ -18,6 +18,76 @@ bp = Blueprint("plantoes", __name__)
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+@bp.route("/plantoes/delete_plantao/<int:id>", methods=["POST"])
+def delete_plantao(id):
+    with SessionLocal() as session:
+        try:
+            plantao = session.get(Plantao, id)
+            if plantao:
+                session.delete(plantao)
+                session.commit()
+                flash("Plantão removido com sucesso!", "success")
+            else:
+                flash("Plantão não encontrado.", "error")
+        except Exception as e:
+            session.rollback()
+            flash(f"Erro ao remover: {e}", "error")
+    return redirect(url_for("plantoes.index"))
+
+
+@bp.route("/plantoes/delete_escala/<int:id>", methods=["POST"])
+def delete_escala(id):
+    with SessionLocal() as session:
+        try:
+            escala = session.get(Escala, id)
+            if escala:
+                session.delete(escala)
+                session.commit()
+                flash("Escala removida com sucesso!", "success")
+            else:
+                flash("Escala não encontrada.", "error")
+        except Exception as e:
+            session.rollback()
+            flash(f"Erro ao remover: {e}", "error")
+    return redirect(url_for("plantoes.index"))
+
+
+@bp.route("/plantoes/add_plantao", methods=["POST"])
+def add_plantao():
+    with SessionLocal() as session:
+        try:
+            plantao = Plantao(
+                id_preceptor=int(request.form["id_preceptor"]),
+                id_unidade=int(request.form["id_unidade"]),
+                dia_semana=datetime.strptime(request.form["dia_semana"], "%Y-%m-%d").date(),
+                turno=request.form["turno"],
+            )
+            session.add(plantao)
+            session.commit()
+            flash("Plantão adicionado com sucesso!", "success")
+        except Exception as e:
+            session.rollback()
+            flash(f"Erro: {e}", "error")
+    return redirect(url_for("plantoes.index"))
+
+
+@bp.route("/plantoes/add_escala", methods=["POST"])
+def add_escala():
+    with SessionLocal() as session:
+        try:
+            escala = Escala(
+                id_plantao=int(request.form["id_plantao"]),
+                id_residente=int(request.form["id_residente"]),
+            )
+            session.add(escala)
+            session.commit()
+            flash("Escala adicionada com sucesso!", "success")
+        except Exception as e:
+            session.rollback()
+            flash(f"Erro: {e}", "error")
+    return redirect(url_for("plantoes.index"))
 
 
 @bp.route("/plantoes", methods=["GET", "POST"])
@@ -43,7 +113,6 @@ def index():
                 flash(f"Erro: {e}", "error")
 
         total = session.query(func.count(Plantao.id_plantao)).scalar()
-        print(f"[DEBUG] Total plantões no banco: {total}")
 
         rows = (
             session.query(
@@ -59,11 +128,21 @@ def index():
             .all()
         )
 
-        ultimo_log = None
-
         lista_residentes = (
             session.query(Residente.id_residente, Residente.nome)
             .order_by(Residente.nome)
+            .all()
+        )
+
+        lista_preceptores = (
+            session.query(Preceptor.id_preceptor, Preceptor.nome)
+            .order_by(Preceptor.nome)
+            .all()
+        )
+
+        lista_unidades = (
+            session.query(Unidade.id_unidade, Unidade.nome)
+            .order_by(Unidade.nome)
             .all()
         )
 
@@ -88,8 +167,9 @@ def index():
         "plantoes.html",
         total=total,
         plantoes=rows,
-        ultimo_log=ultimo_log,
         lista_residentes=lista_residentes,
+        lista_preceptores=lista_preceptores,
+        lista_unidades=lista_unidades,
         escalas=escalas,
     )
 

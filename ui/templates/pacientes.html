@@ -18,22 +18,13 @@
 
         <div class="page-header__info">
 
+            <!-- ── Legenda ── -->
+            <span class="delete-legend">Clique no <strong>✕</strong> para remover</span>
+
             <!-- ── Total cadastrados ── -->
             <div class="info-box">
                 <div class="info-box__label">Cadastrados</div>
                 <div class="info-box__value">{{ total }}</div>
-            </div>
-
-            <!-- ── Último log ── -->
-            <div class="info-box info-box--log">
-                <div class="info-box__label">Último log</div>
-                {% if ultimo_log %}
-                    <select class="info-box__dropdown">
-                        <option>{{ ultimo_log.data_hora.strftime('%d/%m/%Y %H:%M') }} — {{ ultimo_log.operacao }} por {{ ultimo_log.usuario }}</option>
-                    </select>
-                {% else %}
-                    <div class="info-box__empty">Nenhum log disponível</div>
-                {% endif %}
             </div>
 
         </div>
@@ -51,17 +42,28 @@
                     <th>Telefone</th>
                     <th>Grupo Sanguíneo</th>
                     <th>Convênio</th>
+                    <th style="width: 40px;"></th>
                 </tr>
             </thead>
             <tbody>
                 {% for p in pacientes %}
                 <tr>
                     <td>{{ p.id_paciente }}</td>
-                    <td>{{ p.nome }}</td>
+                    <td>
+                        {{ p.nome }}
+                        {% if p.id_paciente in internados %}
+                        <span title="Internado" style="color: var(--danger); font-weight: 700; margin-left: 0.35rem;">⚠</span>
+                        {% endif %}
+                    </td>
                     <td>{{ p.cpf }}</td>
                     <td>{{ p.telefone }}</td>
                     <td>{{ p.grupo_sanguineo }}</td>
                     <td>{{ p.num_convenio }}</td>
+                    <td>
+                        <form class="delete-form" method="POST" action="{{ url_for('pacientes.delete', id=p.id_paciente) }}" onsubmit="return confirm('Tem certeza?')">
+                            <button type="submit" class="delete-btn">✕</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -93,7 +95,7 @@
                     </div>
                     <div class="form-group">
                         <label for="telefone">Telefone</label>
-                        <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000">
+                        <input type="text" id="telefone" name="telefone" placeholder="00(00)00000-0000">
                     </div>
                     <div class="form-group">
                         <label for="data_nascimento">Data de nascimento</label>

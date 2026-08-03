@@ -4,12 +4,12 @@ from decimal import Decimal
 try:
     from sqlalchemy import select, func, cast, Numeric
     from sqlalchemy.orm import Session
-    from orm.models import Paciente, Residente, Preceptor, Atendimento, Procedimento, ProcedimentoRealizado, Escala, Plantao
+    from orm.models import Paciente, Residente, Preceptor, Unidade, Atendimento, Procedimento, ProcedimentoRealizado, Escala, Plantao
     from orm.database import SessionLocal
 except ImportError:
     from sqlalchemy import select, func, cast, Numeric
     from sqlalchemy.orm import Session
-    from models import Paciente, Residente, Preceptor, Atendimento, Procedimento, ProcedimentoRealizado, Escala, Plantao
+    from models import Paciente, Residente, Preceptor, Unidade, Atendimento, Procedimento, ProcedimentoRealizado, Escala, Plantao
     from database import SessionLocal
 
 TURNOS_VALIDOS = ("manhã", "tarde", "noite")
@@ -24,6 +24,7 @@ def registrar_atendimento_completo(
     id_paciente: int,
     id_residente: int,
     id_preceptor: int,
+    id_unidade: int,
     data_hora: datetime,
     duracao_minutos: Decimal,
     procedimentos: list[dict],
@@ -36,6 +37,9 @@ def registrar_atendimento_completo(
 
     if session.get(Preceptor, id_preceptor) is None:
         raise ValueError("Preceptor não existe")
+
+    if session.get(Unidade, id_unidade) is None:
+        raise ValueError("Unidade não existe")
 
     if duracao_minutos is None or duracao_minutos < 0:
         raise ValueError("Duração do atendimento inválida")
@@ -50,6 +54,7 @@ def registrar_atendimento_completo(
         id_paciente=id_paciente,
         id_residente=id_residente,
         id_preceptor=id_preceptor,
+        id_unidade=id_unidade,
         data_hora=data_hora,
         duracao_minutos=duracao_minutos,
     )
@@ -114,13 +119,17 @@ def calcular_tempo_medio_espera(session: Session):
 
     stmt = (
         select(
+            Unidade.id_unidade,
+            Unidade.nome.label("nome_unidade"),
             func.round(cast(func.avg(tempo_espera_segundos) / 60.0, Numeric), 2).label("tempo_medio_espera_minutos"),
         )
+        .join(Unidade, Unidade.id_unidade == Atendimento.id_unidade)
         .join(primeiro_procedimento, primeiro_procedimento.c.id_atendimento == Atendimento.id_atendimento)
+        .group_by(Unidade.id_unidade, Unidade.nome)
+        .order_by(Unidade.id_unidade)
     )
 
-    resultado = session.execute(stmt).scalar()
-    return resultado
+    return session.execute(stmt).all()
 
 
 # ──────────────────────────────────────────────────────────────────────────────────────────────────
@@ -210,6 +219,7 @@ def cli_registrar_atendimento():
                 id_paciente=1,
                 id_residente=1,
                 id_preceptor=1,
+                id_unidade=1,
                 data_hora=datetime.now(),
                 duracao_minutos=Decimal("30.00"),
                 procedimentos=[{
@@ -230,7 +240,8 @@ def cli_registrar_atendimento():
 def cli_calcular_tempo_medio():
     with SessionLocal() as session:
         resultado = calcular_tempo_medio_espera(session)
-        print(f"Tempo médio de espera global: {resultado} min")
+        for row in resultado:
+            print(f"Unidade: {row.nome_unidade} | Tempo médio: {row.tempo_medio_espera_minutos} min")
 
 
 def cli_reajustar_escala():

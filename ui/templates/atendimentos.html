@@ -20,24 +20,15 @@
         <div class="page-header__info">
 
             <!-- ── Legenda ── -->
+            <span class="delete-legend">Clique no <strong>✕</strong> para remover</span>
+
+            <!-- ── Legenda expand ── -->
             <span class="expand-legend">Clique o botão <strong>+</strong> para ver os procedimentos</span>
 
             <!-- ── Total cadastrados ── -->
             <div class="info-box">
                 <div class="info-box__label">Realizados</div>
                 <div class="info-box__value">{{ total }}</div>
-            </div>
-
-            <!-- ── Último log ── -->
-            <div class="info-box info-box--log">
-                <div class="info-box__label">Último log</div>
-                {% if ultimo_log %}
-                    <select class="info-box__dropdown">
-                        <option>{{ ultimo_log.data_hora.strftime('%d/%m/%Y %H:%M') }} — {{ ultimo_log.operacao }} por {{ ultimo_log.usuario }}</option>
-                    </select>
-                {% else %}
-                    <div class="info-box__empty">Nenhum log disponível</div>
-                {% endif %}
             </div>
 
         </div>
@@ -56,6 +47,7 @@
                     <th>Data/Hora</th>
                     <th>Duração (min)</th>
                     <th style="width: 40px;"></th>
+                    <th style="width: 40px;"></th>
                 </tr>
             </thead>
             <tbody>
@@ -68,9 +60,14 @@
                     <td>{{ a.data_hora.strftime('%d/%m/%Y %H:%M') }}</td>
                     <td>{{ a.duracao_minutos }}</td>
                     <td><button class="expand-btn" onclick="toggleDetail(this)">+</button></td>
+                    <td>
+                        <form class="delete-form" method="POST" action="{{ url_for('atendimentos.delete', id=a.id_atendimento) }}" onsubmit="return confirm('Tem certeza?')">
+                            <button type="submit" class="delete-btn">✕</button>
+                        </form>
+                    </td>
                 </tr>
                 <tr class="detail-row">
-                    <td colspan="7">
+                    <td colspan="8">
                         <div class="detail-cell">
                             <div class="detail-cell__title">Procedimentos realizados</div>
                             {% if a.procedimentos %}
@@ -144,6 +141,15 @@
                             <option value="">Selecione</option>
                             {% for pr in lista_preceptores %}
                             <option value="{{ pr.id_preceptor }}">{{ pr.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_unidade">Unidade</label>
+                        <select id="id_unidade" name="id_unidade">
+                            <option value="">Selecione</option>
+                            {% for u in lista_unidades %}
+                            <option value="{{ u.id_unidade }}">{{ u.nome }}</option>
                             {% endfor %}
                         </select>
                     </div>
