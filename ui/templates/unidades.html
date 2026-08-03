@@ -2,7 +2,7 @@
      UNIDADES.HTML — LISTAGEM DE UNIDADES
 
      Herda de base.html.
-     Exibe unidades e tempo médio de espera global.
+     Exibe unidades e tempo médio de espera por unidade.
 -->
 
 
@@ -18,34 +18,46 @@
                 <div class="info-box__label">Cadastradas</div>
                 <div class="info-box__value">{{ total }}</div>
             </div>
-            <div class="info-box">
-                <div class="info-box__label">Tempo médio de espera</div>
-                <div class="info-box__value">{{ tempo_medio or '—' }} min</div>
-            </div>
         </div>
     </div>
 
-    <div class="table-wrapper">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Tipo</th>
-                    <th>Capacidade de leitos</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for u in unidades %}
-                <tr>
-                    <td>{{ u.id_unidade }}</td>
-                    <td>{{ u.nome }}</td>
-                    <td>{{ u.tipo }}</td>
-                    <td>{{ u.capacidade_leitos }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div style="display: flex; gap: 2rem; align-items: flex-start;">
+
+        <!-- ── Tabela de unidades ── -->
+        <div class="table-wrapper" style="flex: 1;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Capacidade de leitos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in unidades %}
+                    <tr>
+                        <td>{{ u.id_unidade }}</td>
+                        <td>{{ u.nome }}</td>
+                        <td>{{ u.tipo }}</td>
+                        <td>{{ u.capacidade_leitos }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ── Tempo médio de espera por unidade ── -->
+        <div style="min-width: 200px;">
+            <h2 class="section-title">Tempo médio de espera</h2>
+            {% for u in unidades %}
+            <div class="info-box" style="margin-bottom: 0.25rem; padding: 0.35rem 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                <div class="info-box__label" style="font-size: 0.75rem; margin-bottom: 0;">{{ u.nome }}</div>
+                <div class="info-box__value" style="font-size: 0.9rem; line-height: 1;">{{ tempo_map.get(u.id_unidade, '—') }} min</div>
+            </div>
+            {% endfor %}
+        </div>
+
     </div>
 
 {% endblock %}

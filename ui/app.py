@@ -39,6 +39,9 @@ def create_app():
 
     app.secret_key = "hospitalbd-chave-secreta"
 
+    # Registra os triggers ORM (event listeners)
+    import orm.triggers
+
 
     ''' ──────────────────────────────────────────────────────────────────────────────────────────────────
      • Blueprints (rotas): Cada arquivo em routes/ registra seu prefixo aqui.
@@ -67,6 +70,12 @@ def create_app():
 
     from routes.analytics import bp as analytics_bp
     app.register_blueprint(analytics_bp)
+
+    from routes.views import bp as views_bp
+    app.register_blueprint(views_bp)
+
+    from routes.internacoes import bp as internacoes_bp
+    app.register_blueprint(internacoes_bp)
 
     return app
 

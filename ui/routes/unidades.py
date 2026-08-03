@@ -3,7 +3,7 @@
 unidades.py:
 
 ROTAS DA PÁGINA DE UNIDADES, Blueprint "unidades".
-Exibe unidades e tempo médio de espera global usando calcular_tempo_medio_espera.
+Exibe unidades e tempo médio de espera por unidade.
 
 '''
 
@@ -30,13 +30,14 @@ def index():
             .all()
         )
 
-        tempo_medio = calcular_tempo_medio_espera(session)
+        resultado = calcular_tempo_medio_espera(session)
+        tempo_map = {row.id_unidade: row.tempo_medio_espera_minutos for row in resultado}
 
     return render_template(
         "unidades.html",
         total=total,
         unidades=unidades,
-        tempo_medio=tempo_medio,
+        tempo_map=tempo_map,
     )
 
 
