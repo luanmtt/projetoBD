@@ -213,9 +213,9 @@ def popular_banco():
 
         # 12. Internações 
         internacoes = [
-            Internacao(id_internacao=1, id_paciente=1, data_hora_entrada=datetime(2026, 5, 20, 14, 0), data_hora_saida=datetime(2026, 5, 25, 10, 0)),
-            Internacao(id_internacao=2, id_paciente=2, data_hora_entrada=datetime(2026, 6, 1, 8, 0), data_hora_saida=datetime(2026, 6, 10, 18, 0)),  # Alterado de None para datetime
-            Internacao(id_internacao=3, id_paciente=3, data_hora_entrada=datetime(2026, 6, 2, 11, 30), data_hora_saida=datetime(2026, 6, 4, 16, 0)),
+            Internacao(id_internacao=1, id_paciente=1, data_hora_entrada=datetime(2026, 5, 20, 14, 0), data_hora_saida=None),
+            Internacao(id_internacao=2, id_paciente=2, data_hora_entrada=datetime(2026, 6, 1, 8, 0), data_hora_saida=datetime(2026, 6, 10, 18, 0)),
+            Internacao(id_internacao=3, id_paciente=3, data_hora_entrada=datetime(2026, 6, 2, 11, 30), data_hora_saida=None),
         ]
         session.add_all(internacoes)
 
