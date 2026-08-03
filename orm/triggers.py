@@ -105,7 +105,11 @@ def _audita_insercao(mapper, connection, target: Atendimento):
 
 def _audita_atualizacao(mapper, connection, target: Atendimento):
     usuario = connection.execute(select(func.current_user())).scalar()
+    dados_antigos = _serializa_linha_antiga(target)
+    dados_novos = _serializa_linha(target)
     print(f"[TRIGGER] trg_audita_atendimento: UPDATE no atendimento {target.id_atendimento} por {usuario}")
+    print(f"  dados_antigos: {dados_antigos}")
+    print(f"  dados_novos:   {dados_novos}")
     connection.execute(
         insert(Auditoria_atendimento.__table__).values(
             id_atendimento=target.id_atendimento,

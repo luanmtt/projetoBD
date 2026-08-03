@@ -69,47 +69,62 @@ Ctrl + C
 projetoBD
 │
 ├── docs/
-│   ├── DER_Completo.pdf    # Diagrama Entidade-Relacionamento completo do projeto
-│   └── modelagem.pdf       # Documento de modelagem conceitual, lógica e física
+│   ├── DER_Completo.pdf
+│   └── modelagem.pdf
 │
 ├── sql/
-│   ├── schema.sql          # Definição do esquema do banco de dados (CREATE TABLEs, constraints, chaves)
-│   ├── CRUD.sql            # Operações de Create, Read, Update e Delete sobre as tabelas
-│   ├── analytics.sql       # Consultas analíticas (rankings, agregações, estatísticas)
-│   ├── views.sql           # Criação de Views (rankings procedimento, atendimentos, residentes) 
-│   ├── triggers.sql        # Criação de triggers para auditoria, checagem de regra de negócio e estatísticas
-│   └── test_cases.sql      # Dados de teste para popular o banco (pessoas, atendimentos, procedimentos, etc.)
+│   ├── schema.sql
+│   ├── CRUD.sql
+│   ├── analytics.sql
+│   ├── views.sql
+│   ├── triggers.sql
+│   ├── procedures.sql
+│   └── test_cases.sql
 │
-├── orm/                    # Camada de acesso a dados via SQLAlchemy
-│   ├── database.py         # Conexão com o banco (engine, sessão)
-│   ├── models.py           # Mapeamento objeto-relacional: classes Python ↔ tabelas
-│   ├── CRUD.py             # Operações de Create, Read, Update e Delete via ORM
-│   ├── consultations.py    # Consultas analíticas via ORM
-│   ├── main.py             # Script principal de execução do backend
-│   ├── test_cases.py       # Dados de teste em Python (equivalente ao test_cases.sql)
-│   └── .env                # Deve ser criado para acesso ao banco
+├── orm/
+│   ├── database.py
+│   ├── models.py
+│   ├── CRUD.py
+│   ├── adv_queries.py
+│   ├── procedures.py
+│   ├── triggers.py
+│   ├── views.py
+│   ├── concurrency.py
+│   ├── main.py
+│   ├── test_cases.py
+│   └── .env
 │
-├── ui/                     # Interface web com Flask + Jinja2
-│   ├── app.py              # Fábrica da aplicação Flask
-│   ├── routes/             # Rotas HTTP organizadas por recurso (blueprints)
+├── ui/
+│   ├── app.py
+│   ├── routes/
 │   │   ├── home.py
 │   │   ├── pacientes.py
 │   │   ├── profissionais.py
 │   │   ├── atendimentos.py
-│   │   └── plantoes.py
-│   ├── templates/          # Templates HTML com Jinja2 (base + páginas)
+│   │   ├── plantoes.py
+│   │   ├── procedimentos.py
+│   │   ├── unidades.py
+│   │   ├── internacoes.py
+│   │   ├── analytics.py
+│   │   └── views.py
+│   ├── templates/
 │   │   ├── base.html
 │   │   ├── index.html
 │   │   ├── pacientes.html
 │   │   ├── profissionais.html
 │   │   ├── atendimentos.html
-│   │   └── plantoes.html
-│   └── static/             # Arquivos estáticos (CSS, JS)
+│   │   ├── plantoes.html
+│   │   ├── procedimentos.html
+│   │   ├── unidades.html
+│   │   ├── internacoes.html
+│   │   ├── analytics.html
+│   │   └── views.html
+│   └── static/
 │       ├── css/style.css
 │       └── js/main.js
 │
-├── run.py                  # Ponto de entrada da aplicação (`python run.py`)
-├── requirements.txt        # Dependências Python (Flask, SQLAlchemy, psycopg2)
-├── .gitignore              # Arquivos e diretórios ignorados pelo Git
-└── README.md               # o que estás lendo!
+├── run.py
+├── requirements.txt
+├── .gitignore
+└── README.md
 ```
