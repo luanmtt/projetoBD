@@ -248,7 +248,7 @@ class Internacao(Base):
     id_internacao: Mapped[int] = mapped_column(primary_key=True)
     id_paciente: Mapped[int] = mapped_column(ForeignKey("paciente.id_paciente", ondelete="CASCADE"), nullable=False)
     data_hora_entrada: Mapped[date] = mapped_column(DateTime, nullable=False)
-    data_hora_saida: Mapped[date] = mapped_column(DateTime)
+    data_hora_saida: Mapped[Optional[date]] = mapped_column(DateTime)
 
     paciente: Mapped["Paciente"] = relationship(back_populates="internacoes")
 
