@@ -1,0 +1,135 @@
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     ANALYTICS.HTML — CONSULTAS ANALÍTICAS
+
+     Herda de base.html.
+     Exibe as consultas avançadas de adv_queries.py em dropdowns.
+-->
+
+
+{% extends "base.html" %}
+{% block title %}Analytics — HospitalBD{% endblock %}
+{% block content %}
+
+    <div class="page-header">
+        <h1 class="page-header__title">Analytics</h1>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         1. Preceptores que atenderam pacientes flamenguistas
+    -->
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Preceptores que atenderam pacientes flamenguistas
+        </button>
+
+        <div class="form-body">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Preceptor</th>
+                            <th>Titulação</th>
+                            <th>CRM</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in preceptores_flamengo %}
+                        <tr>
+                            <td>{{ p.nome }}</td>
+                            <td>{{ p.titulacao }}</td>
+                            <td>{{ p.crm }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         2. Último atendimento de cada paciente
+    -->
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Último atendimento de cada paciente
+        </button>
+
+        <div class="form-body">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Paciente</th>
+                            <th>Data/Hora</th>
+                            <th>Residente</th>
+                            <th>Preceptor</th>
+                            <th>Procedimentos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in ultimos_atendimentos %}
+                        <tr>
+                            <td>{{ a.paciente }}</td>
+                            <td>{{ a.data_hora.strftime('%d/%m/%Y %H:%M') }}</td>
+                            <td>{{ a.residente }}</td>
+                            <td>{{ a.preceptor }}</td>
+                            <td>{{ a.procedimentos | length }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         3. Percentual de alto risco por residente
+    -->
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Percentual de alto risco por residente
+        </button>
+
+        <div class="form-body">
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Residente</th>
+                            <th>Total de procedimentos</th>
+                            <th>Taxa de alto risco (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stat in estatisticas_risco %}
+                        <tr>
+                            <td>{{ stat.nome_residente }}</td>
+                            <td>{{ stat.total }}</td>
+                            <td>{{ "%.2f"|format(stat.percentual_alto_risco or 0) }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->

@@ -1,0 +1,840 @@
+/* 
+
+style.css:
+
+   • Variáveis de cores:
+   Definidas no :root pra usar em qualquer lugar do CSS.
+
+   --bg      = cor de fundo geral da página
+   --accent  = cor de destaque (botões, links, bordas)
+   --fg      = cor do texto principal
+   --fg-light= texto mais claro (legendas, placeholders)
+   --white   = branco puro (cards, navbar)
+   --shadow  = sombra sutil nos cards
+*/
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+
+:root {
+    --bg:        #F2F4F3;
+    --accent:    #4E6E5D;
+    --accent-hover: #0A3200;
+    --fg:        #323031;
+    --fg-light:  #6b696a;
+    --white:     #ffffff;
+    --border:    #d4d6d5;
+    --shadow:    0 2px 12px rgba(50, 48, 49, 0.08);
+    --danger:    #890a23;
+
+    --font:      'Poppins', sans-serif;
+    --radius:    8px;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   RESET BÁSICO
+   Remove margens e paddings padrão do navegador.
+      
+*/
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   CORPO DA PÁGINA
+   Fundo cinza claro (#F2F4F3), fonte Poppins, texto escuro.
+*/
+
+body {
+    font-family: var(--font);
+    font-weight: 400;
+    color: var(--fg);
+    background-color: var(--bg);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+    NAVBAR 
+    Barra superior fixa. Fundo branco, sombra sutil embaixo.
+*/
+
+.navbar {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow);
+}
+
+/* container interno: nome à esquerda, links à direita */
+.navbar__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+/* ── Logo / nome do sistema ── */
+.navbar__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.navbar__icon {
+    font-size: 1.5rem;
+}
+
+.navbar__title {
+    letter-spacing: 0.5px;
+}
+
+/* ── Lista de links ── */
+.navbar__links {
+    display: flex;
+    list-style: none;
+    gap: 0.25rem;
+}
+
+.navbar__link {
+    text-decoration: none;
+    color: var(--fg-light);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.2s, background-color 0.2s;
+}
+
+/* efeito hover: fundo verde clarinho */
+.navbar__link:hover {
+    color: var(--accent);
+    background-color: var(--bg);
+}
+
+/* link da página atual: fica destacado */
+.navbar__link.active {
+    color: var(--accent);
+    background-color: var(--bg);
+    font-weight: 600;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+    CONTEÚDO PRINCIPAL 
+    Área que cresce pra empurrar o footer pro fim da página.
+*/
+
+.main-content {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   FOOTER 
+   Sempre no fim. Texto centralizado, leve, sem borda.
+      
+*/
+
+.footer {
+    text-align: center;
+    padding: 1.5rem 2rem;
+    color: var(--fg-light);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+    background-color: var(--white);
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+    HERO (cabeçalho da página inicial)       
+*/
+
+.hero {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+}
+
+.hero__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--fg);
+    margin-bottom: 0.5rem;
+}
+
+.hero__subtitle {
+    font-size: 1rem;
+    color: var(--fg-light);
+    font-weight: 400;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+    CARDS DE ESTATÍSTICA 
+    Grade de 3 colunas com números grandes e legenda embaixo.
+*/
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background-color: var(--white);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+}
+
+.stat-card__number {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.2;
+}
+
+.stat-card__label {
+    font-size: 0.85rem;
+    color: var(--fg-light);
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+    TÍTULO DE SEÇÃO 
+*/
+
+.section-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 1rem;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   GRADE DE NAVEGAÇÃO 
+   Cards clicáveis que levam pras seções do sistema.
+*/
+
+.nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.nav-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    text-decoration: none;
+    color: var(--fg);
+    box-shadow: var(--shadow);
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+/* leve elevação no hover */
+.nav-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+}
+
+/* ícone do card (emoji/símbolo) */
+.nav-card__icon {
+    font-size: 1.75rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg);
+    border-radius: var(--radius);
+    flex-shrink: 0;
+}
+
+/* título do card */
+.nav-card__title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.15rem;
+}
+
+/* descrição do card */
+.nav-card__desc {
+    font-size: 0.8rem;
+    color: var(--fg-light);
+    font-weight: 400;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────────────────────────
+    BOTÕES 
+*/
+
+.btn {
+    display: inline-block;
+    font-family: var(--font);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+/* botão primário (verde) */
+.btn--primary {
+    background-color: var(--accent);
+    color: var(--white);
+}
+
+.btn--primary:hover {
+    background-color: var(--accent-hover);
+}
+
+/* clica: afunda levemente */
+.btn:active {
+    transform: scale(0.97);
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+    UTILITÁRIOS  
+*/
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+
+/* 
+
+RESPONSIVO: TABLET E CELULAR 
+   Quando a tela for menor que 768px, empilha as coisas.
+
+@media (max-width: 768px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .nav-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .navbar__inner {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem 0;
+        gap: 0.5rem;
+    }
+
+    .navbar__links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero__title {
+        font-size: 1.5rem;
+    }
+}
+
+*/
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   LISTAGEM — CABEÇALHO DA PÁGINA
+   Título à esquerda, caixas de info à direita.
+*/
+
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem 0 1.5rem;
+    flex-wrap: wrap;
+}
+
+.page-header__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--fg);
+    line-height: 1.2;
+    align-self: center;
+}
+
+.page-header__info {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   INFO-BOX
+   Caixas de informação ao lado do título.
+*/
+
+.info-box {
+    background-color: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    box-shadow: var(--shadow);
+    min-width: 180px;
+}
+
+.info-box__label {
+    font-size: 0.75rem;
+    color: var(--fg-light);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.info-box__value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1.2;
+}
+
+.info-box--log {
+    min-width: 240px;
+}
+
+.info-box__dropdown {
+    width: 100%;
+    font-family: var(--font);
+    font-size: 0.85rem;
+    padding: 0.4rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--bg);
+    color: var(--fg);
+    cursor: pointer;
+    margin-top: 0.35rem;
+}
+
+.info-box__dropdown:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.info-box__empty {
+    font-size: 0.8rem;
+    color: var(--fg-light);
+    font-style: italic;
+    margin-top: 0.35rem;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   TABELA DE DADOS
+   Borda verde escuro ao redor, linhas alternando cinza claro e branco.
+*/
+
+.table-wrapper {
+    border: 2px solid var(--accent);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.data-table thead {
+    background-color: var(--accent);
+    color: var(--white);
+}
+
+.data-table th {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.data-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.data-table tbody tr:nth-child(even) {
+    background-color: #f7f8f7;
+}
+
+.data-table tbody tr:nth-child(odd) {
+    background-color: var(--white);
+}
+
+.data-table tbody tr:hover {
+    background-color: #eef0ef;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   BOTÃO EXPAND/COLLAPSE
+   Aparece no hover da linha. +/- pra abrir/fechar procedimentos.
+*/
+
+.expand-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--danger);
+    background-color: var(--white);
+    color: var(--danger);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, border-color 0.2s;
+    padding: 0;
+    visibility: hidden;
+}
+
+.expand-btn:hover {
+    background-color: var(--danger);
+    color: var(--white);
+}
+
+.data-table tbody tr:hover .expand-btn,
+.data-table tbody .data-row:has(+ .detail-row.is-open) .expand-btn {
+    visibility: visible;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   LINHA EXPANDIDA (PROCEDIMENTOS)
+   Borda vermelha escura ao redor do bloco expandido.
+*/
+
+.detail-row {
+    display: none;
+}
+
+.detail-row.is-open {
+    display: table-row;
+}
+
+.detail-cell {
+    padding: 0.75rem 1rem;
+    background-color: var(--white);
+    border: 2px solid var(--danger);
+    border-radius: var(--radius);
+    margin: 0.5rem 1rem;
+}
+
+.detail-cell__title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--danger);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.detail-table th {
+    text-align: left;
+    padding: 0.4rem 0.5rem;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--fg-light);
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-table td {
+    padding: 0.4rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.detail-empty {
+    font-size: 0.8rem;
+    color: var(--fg-light);
+    font-style: italic;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   LEGENDA EXPAND
+*/
+
+.expand-legend {
+    font-size: 0.8rem;
+    color: var(--fg-light);
+    font-weight: 400;
+    align-self: center;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   FLASH MESSAGES
+*/
+
+.flash {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.flash--success {
+    background-color: #e6f4ea;
+    color: #1a5c2a;
+    border: 1px solid #a3d9b1;
+}
+
+.flash--error {
+    background-color: #fdecea;
+    color: #890a23;
+    border: 1px solid #f5c6cb;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   BOTÃO DE DELETE
+*/
+
+.delete-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid var(--danger);
+    background-color: var(--white);
+    color: var(--danger);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, color 0.2s;
+    padding: 0;
+}
+
+.delete-btn:hover {
+    background-color: var(--danger);
+    color: var(--white);
+}
+
+.delete-form {
+    display: inline;
+}
+
+.delete-legend {
+    font-size: 0.8rem;
+    color: var(--fg-light);
+    font-weight: 400;
+    align-self: center;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   FORMULÁRIO DE ADIÇÃO
+   Seção expansível abaixo da tabela.
+*/
+
+.form-section {
+    margin-top: 2rem;
+}
+
+.form-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+    background: none;
+    border: none;
+    font-family: var(--font);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--fg);
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.form-toggle:hover {
+    color: var(--accent);
+}
+
+.form-toggle__arrow {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s;
+}
+
+.form-toggle.is-open .form-toggle__arrow {
+    transform: rotate(180deg);
+}
+
+.form-body {
+    display: none;
+    background-color: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.form-body.is-open {
+    display: block;
+}
+
+.form-subtitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1.25rem 0 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.form-subtitle:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--fg-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select {
+    font-family: var(--font);
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--bg);
+    color: var(--fg);
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.form-actions {
+    margin-top: 1.25rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-group--hidden {
+    display: none;
+}
+
+
+/* ───────────────────────────────────────────────────────────────────────────────────────────────── 
+   RESPONSIVO — LISTAGEM
+*/
+
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page-header__info {
+        width: 100%;
+    }
+
+    .info-box {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+}
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */

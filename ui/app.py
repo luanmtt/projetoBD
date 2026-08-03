@@ -1,0 +1,83 @@
+'''
+    
+app.py:
+
+Cria a instância do Flask, registra os blueprints (rotas)
+e fecha a sessão do banco depois de cada requisição.
+
+
+'''
+
+import os
+import sys
+
+# Garante que o diretório ui/ esteja no path de imports do Python.
+# Assim `from routes.home import bp` funciona mesmo rodando da raiz.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from flask import Flask
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+def create_app():
+    """
+    Cria e configura a aplicação Flask.
+
+    Configura também as pastas de template e arquivos estáticos,
+    que ficam dentro de ui/.
+    """
+
+    ui_dir = os.path.dirname(os.path.abspath(__file__))
+
+    app = Flask(
+        __name__,
+        template_folder=os.path.join(ui_dir, "templates"),
+        static_folder=os.path.join(ui_dir, "static"),
+    )
+
+    app.secret_key = "hospitalbd-chave-secreta"
+
+    # Registra os triggers ORM (event listeners)
+    import orm.triggers
+
+
+    ''' ──────────────────────────────────────────────────────────────────────────────────────────────────
+     • Blueprints (rotas): Cada arquivo em routes/ registra seu prefixo aqui.
+    '''
+
+    from routes.home import bp as home_bp
+    app.register_blueprint(home_bp)
+
+    from routes.pacientes import bp as pacientes_bp
+    app.register_blueprint(pacientes_bp)
+
+    from routes.profissionais import bp as profissionais_bp
+    app.register_blueprint(profissionais_bp)
+
+    from routes.atendimentos import bp as atendimentos_bp
+    app.register_blueprint(atendimentos_bp)
+
+    from routes.plantoes import bp as plantoes_bp
+    app.register_blueprint(plantoes_bp)
+
+    from routes.unidades import bp as unidades_bp
+    app.register_blueprint(unidades_bp)
+    
+    from routes.procedimentos import bp as procedimentos_bp
+    app.register_blueprint(procedimentos_bp)
+
+    from routes.analytics import bp as analytics_bp
+    app.register_blueprint(analytics_bp)
+
+    from routes.views import bp as views_bp
+    app.register_blueprint(views_bp)
+
+    from routes.internacoes import bp as internacoes_bp
+    app.register_blueprint(internacoes_bp)
+
+    return app
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -1,0 +1,106 @@
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     INTERNAÇÕES.HTML — LISTAGEM DE INTERNAÇÕES
+
+     Herda de base.html.
+     Exibe internações, permite internar paciente e registrar alta.
+-->
+
+
+{% extends "base.html" %}
+{% block title %}Internações — HospitalBD{% endblock %}
+{% block content %}
+
+    <div class="page-header">
+        <h1 class="page-header__title">Internações</h1>
+
+        <div class="page-header__info">
+            <span class="delete-legend">⚠ = internado</span>
+            <div class="info-box">
+                <div class="info-box__label">Total</div>
+                <div class="info-box__value">{{ total }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Tabela de internações ── -->
+
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Paciente</th>
+                    <th>Entrada</th>
+                    <th>Saída</th>
+                    <th>Status</th>
+                    <th style="width: 40px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in internacoes %}
+                <tr>
+                    <td>{{ i.id_internacao }}</td>
+                    <td>{{ i.nome_paciente }}</td>
+                    <td>{{ i.data_hora_entrada.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td>{{ i.data_hora_saida.strftime('%d/%m/%Y %H:%M') if i.data_hora_saida else '—' }}</td>
+                    <td>
+                        {% if i.data_hora_saida %}
+                            <span style="color: var(--accent);">Alta</span>
+                        {% else %}
+                            <span style="color: var(--danger); font-weight: 600;">Internado</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if not i.data_hora_saida %}
+                        <form class="delete-form" method="POST" onsubmit="return confirm('Registrar alta?')">
+                            <input type="hidden" name="acao" value="alta">
+                            <input type="hidden" name="id_internacao" value="{{ i.id_internacao }}">
+                            <button type="submit" class="btn btn--primary" style="padding: 0.3rem 0.6rem; font-size: 0.75rem;">Alta</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ── Formulário de internação ── -->
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Internar paciente
+        </button>
+
+        <div class="form-body">
+            <form method="POST">
+                <input type="hidden" name="acao" value="internar">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="id_paciente">Paciente</label>
+                        <select id="id_paciente" name="id_paciente">
+                            <option value="">Selecione</option>
+                            {% for p in lista_pacientes %}
+                            <option value="{{ p.id_paciente }}">{{ p.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="data_hora_entrada">Data e hora de entrada</label>
+                        <input type="datetime-local" id="data_hora_entrada" name="data_hora_entrada">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary">Internar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->

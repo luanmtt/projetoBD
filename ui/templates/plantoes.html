@@ -1,0 +1,257 @@
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     PLANTOES.HTML — LISTAGEM DE PLANTÕES
+
+     Herda de base.html.
+     Exibe título, caixas de info (total + último log) e tabela de dados.
+-->
+
+
+{% extends "base.html" %}
+{% block title %}Plantões — HospitalBD{% endblock %}
+{% block content %}
+
+    <!-- ── Cabeçalho: título + caixas de info ── -->
+
+    <div class="page-header">
+        <h1 class="page-header__title">Plantões</h1>
+
+        <div class="page-header__info">
+
+            <!-- ── Legenda ── -->
+            <span class="delete-legend">Clique no <strong>✕</strong> para remover</span>
+
+            <!-- ── Total cadastrados ── -->
+            <div class="info-box">
+                <div class="info-box__label">Cadastrados</div>
+                <div class="info-box__value">{{ total }}</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── Tabela de dados ── -->
+
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Preceptor</th>
+                    <th>Unidade</th>
+                    <th>Dia</th>
+                    <th>Turno</th>
+                    <th style="width: 40px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pl in plantoes %}
+                <tr>
+                    <td>{{ pl.id_plantao }}</td>
+                    <td>{{ pl.nome_preceptor }}</td>
+                    <td>{{ pl.nome_unidade }}</td>
+                    <td>{{ pl.dia_semana.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ pl.turno }}</td>
+                    <td>
+                        <form class="delete-form" method="POST" action="{{ url_for('plantoes.delete_plantao', id=pl.id_plantao) }}" onsubmit="return confirm('Tem certeza?')">
+                            <button type="submit" class="delete-btn">✕</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ── Tabela de escalas ── -->
+
+    <h2 class="section-title" style="margin-top: 2rem;">Escalas</h2>
+    <div class="table-wrapper">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Residente</th>
+                    <th>Preceptor</th>
+                    <th>Unidade</th>
+                    <th>Dia</th>
+                    <th>Turno</th>
+                    <th style="width: 40px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for e in escalas %}
+                <tr>
+                    <td>{{ e.id_escala }}</td>
+                    <td>{{ e.nome_residente }}</td>
+                    <td>{{ e.nome_preceptor }}</td>
+                    <td>{{ e.nome_unidade }}</td>
+                    <td>{{ e.dia_semana.strftime('%d/%m/%Y') }}</td>
+                    <td>{{ e.turno }}</td>
+                    <td>
+                        <form class="delete-form" method="POST" action="{{ url_for('plantoes.delete_escala', id=e.id_escala) }}" onsubmit="return confirm('Tem certeza?')">
+                            <button type="submit" class="delete-btn">✕</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ── Formulário de reajuste de escala ── -->
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Adicionar plantão
+        </button>
+
+        <div class="form-body">
+            <form method="POST" action="{{ url_for('plantoes.add_plantao') }}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="pl_id_preceptor">Preceptor</label>
+                        <select id="pl_id_preceptor" name="id_preceptor">
+                            <option value="">Selecione</option>
+                            {% for pr in lista_preceptores %}
+                            <option value="{{ pr.id_preceptor }}">{{ pr.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pl_id_unidade">Unidade</label>
+                        <select id="pl_id_unidade" name="id_unidade">
+                            <option value="">Selecione</option>
+                            {% for u in lista_unidades %}
+                            <option value="{{ u.id_unidade }}">{{ u.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pl_dia">Dia</label>
+                        <input type="date" id="pl_dia" name="dia_semana">
+                    </div>
+                    <div class="form-group">
+                        <label for="pl_turno">Turno</label>
+                        <select id="pl_turno" name="turno">
+                            <option value="">Selecione</option>
+                            <option value="manhã">Manhã</option>
+                            <option value="tarde">Tarde</option>
+                            <option value="noite">Noite</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Adicionar escala
+        </button>
+
+        <div class="form-body">
+            <form method="POST" action="{{ url_for('plantoes.add_escala') }}">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="es_id_plantao">Plantão</label>
+                        <select id="es_id_plantao" name="id_plantao">
+                            <option value="">Selecione</option>
+                            {% for pl in plantoes %}
+                            <option value="{{ pl.id_plantao }}">#{{ pl.id_plantao }} — {{ pl.nome_unidade }} — {{ pl.dia_semana.strftime('%d/%m/%Y') }} — {{ pl.turno }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="es_id_residente">Residente</label>
+                        <select id="es_id_residente" name="id_residente">
+                            <option value="">Selecione</option>
+                            {% for r in lista_residentes %}
+                            <option value="{{ r.id_residente }}">{{ r.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── Formulário de reajuste de escala ── -->
+
+    <div class="form-section">
+        <button class="form-toggle" onclick="toggleForm(this)">
+            <svg class="form-toggle__arrow" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+            </svg>
+            Reajustar escala
+        </button>
+
+        <div class="form-body">
+            <form method="POST">
+
+                <div class="form-subtitle">Dados atuais</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="id_residente">Residente</label>
+                        <select id="id_residente" name="id_residente">
+                            <option value="">Selecione</option>
+                            {% for r in lista_residentes %}
+                            <option value="{{ r.id_residente }}">{{ r.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dia_antigo">Dia atual</label>
+                        <input type="date" id="dia_antigo" name="dia_antigo">
+                    </div>
+                    <div class="form-group">
+                        <label for="turno_antigo">Turno atual</label>
+                        <select id="turno_antigo" name="turno_antigo">
+                            <option value="">Selecione</option>
+                            <option value="manhã">Manhã</option>
+                            <option value="tarde">Tarde</option>
+                            <option value="noite">Noite</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-subtitle">Novos dados</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="dia_novo">Novo dia</label>
+                        <input type="date" id="dia_novo" name="dia_novo">
+                    </div>
+                    <div class="form-group">
+                        <label for="turno_novo">Novo turno</label>
+                        <select id="turno_novo" name="turno_novo">
+                            <option value="">Selecione</option>
+                            <option value="manhã">Manhã</option>
+                            <option value="tarde">Tarde</option>
+                            <option value="noite">Noite</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn--primary">Reajustar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->

@@ -82,18 +82,18 @@ VALUES
 
 
 -- atendimentos
-INSERT INTO atendimento (id_atendimento, id_paciente, id_residente, id_preceptor, data_hora, duracao_minutos)
+INSERT INTO atendimento (id_atendimento, id_paciente, id_residente, id_preceptor, id_unidade, data_hora, duracao_minutos)
 VALUES
-    (10, 1, 11, 6, '2026-06-01 08:30:00', 30),
-    (20, 2, 12, 6, '2026-06-01 09:15:00', 45),
-    (30, 3, 15, 7, '2026-06-02 10:00:00', 20),
-    (40, 4, 11, 7, '2026-06-02 11:30:00', 60),
-    (50, 5, 13, 8, '2026-06-03 08:00:00', 25),
-    (60, 1, 14, 6, '2026-06-03 14:20:00', 40),
-    (70, 2, 12, 8, '2026-06-04 09:45:00', 35),
-    (80, 3, 11, 7, '2026-06-04 13:10:00', 15),
-    (90, 4, 14, 8, '2026-06-05 10:30:00', 50),
-    (11, 5, 15, 6, '2026-06-05 16:00:00', 30);
+    (10, 1, 11, 6, 1, '2026-06-01 08:30:00', 30),
+    (20, 2, 12, 6, 2, '2026-06-01 09:15:00', 45),
+    (30, 3, 15, 7, 1, '2026-06-02 10:00:00', 20),
+    (40, 4, 11, 7, 3, '2026-06-02 11:30:00', 60),
+    (50, 5, 13, 8, 2, '2026-06-03 08:00:00', 25),
+    (60, 1, 14, 6, 2, '2026-06-03 14:20:00', 40),
+    (70, 2, 12, 8, 3, '2026-06-04 09:45:00', 35),
+    (80, 3, 11, 7, 1, '2026-06-04 13:10:00', 15),
+    (90, 4, 14, 8, 3, '2026-06-05 10:30:00', 50),
+    (11, 5, 15, 6, 1, '2026-06-05 16:00:00', 30);
 
 INSERT INTO nivel_risco(id_nivel_risco, nivel)
 VALUES
@@ -102,29 +102,29 @@ VALUES
 	(3, 'ALTO');
 
 -- procedimentos
-INSERT INTO procedimento(id_procedimento, codigo, nome, tempo_medio_minutos, id_nivel_risco)
+INSERT INTO procedimento(id_procedimento, codigo, nome, media_tempo_procedimento, id_nivel_risco)
 VALUES
     (1, 'PROC-0001', 'Curativo Simples', 20.00, 1),
     (2, 'PROC-0002', 'Sutura', 35.00, 2),
     (3, 'PROC-0003', 'Drenagem', 45.00, 3),
-    (4, 'PROC-0004', 'Redução de Fratura', 60.00, 2),
+    (4, 'PROC-0004', 'Redução de Fratura',60.00, 2),
     (5, 'PROC-0005', 'Punção', 15.00, 2);
 
 
 -- procedimentos realizados
 INSERT INTO procedimento_realizado (id_atendimento, id_procedimento, quantidade, tempo_real_minutos,
-                                    observacao, faturamento_processado)
+                                    observacao, data_hora_inicio, faturamento_processado)
 VALUES
-    (10, 1, 1, 25, 'Procedimento sem intercorrências', TRUE),
-    (20, 2, 2, 40, 'Paciente colaborativo', FALSE),
-    (30, 1, 1, 18, NULL, TRUE),
-    (40, 3, 1, 55, 'Necessário auxílio do preceptor', FALSE),
-    (50, 2, 1, 20, 'Realizado rapidamente', TRUE),
-    (60, 4, 3, 35, 'Repetido devido a erro inicial', FALSE),
-    (70, 1, 1, 30, NULL, FALSE),
-    (80, 5, 1, 12, 'Procedimento simples', FALSE),
-    (90, 3, 2, 45, 'Leve atraso no início', TRUE),
-    (11, 2, 1, 28, NULL, TRUE);
+    (10, 1, 1, 25, 'Procedimento sem intercorrências', '2026-06-01 08:42:00', TRUE),
+    (20, 2, 2, 40, 'Paciente colaborativo', '2026-06-01 09:26:00', FALSE),
+    (30, 1, 1, 18, NULL, '2026-06-02 10:04:00', TRUE),
+    (40, 3, 1, 55, 'Necessário auxílio do preceptor', '2026-06-02 11:47:00', FALSE),
+    (50, 2, 1, 20, 'Realizado rapidamente','2026-06-03 08:18:00', TRUE),
+    (60, 4, 3, 35, 'Repetido devido a erro inicial', '2026-06-03 14:36:00', FALSE),
+    (70, 1, 1, 30, NULL, '2026-06-04 09:58:00', FALSE),
+    (80, 5, 1, 12, 'Procedimento simples', '2026-06-04 13:16:00', FALSE),
+    (90, 3, 2, 45, 'Leve atraso no início', '2026-06-05 10:46:00', TRUE),
+    (11, 2, 1, 28, NULL, '2026-06-05 16:11:00', TRUE);
 
 
 -- alergias
@@ -135,6 +135,31 @@ VALUES
     (30, 3, 'Dipirona'),
     (40, 4, 'Água'),
     (50, 5, 'Poeira');
+
+-- plantões
+INSERT INTO plantao (id_plantao, id_preceptor, id_unidade, dia_semana, turno)
+VALUES
+    (1, 6, 1, '2026-06-01', 'manhã'),
+    (2, 7, 2, '2026-06-01', 'tarde'),
+    (3, 8, 3, '2026-06-02', 'noite'),
+    (4, 9, 1, '2026-06-03', 'manhã'),
+    (5, 10, 2, '2026-06-03', 'tarde');
+
+-- escalas
+INSERT INTO escala (id_escala, id_plantao, id_residente)
+VALUES
+    (1, 1, 11),
+    (2, 1, 12),
+    (3, 2, 13),
+    (4, 3, 14),
+    (5, 4, 15);
+
+-- internações
+INSERT INTO internacao (id_internacao, id_paciente, data_hora_entrada, data_hora_saida)
+VALUES
+    (1, 1, '2026-05-20 14:00:00', '2026-05-25 10:00:00'),
+    (2, 2, '2026-06-01 08:00:00', NULL),
+    (3, 3, '2026-06-02 11:30:00', '2026-06-04 16:00:00');
 
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

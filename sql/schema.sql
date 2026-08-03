@@ -10,14 +10,16 @@ O arquivo de modelagem está na root do projeto como Modelagem.pdf.
 
 */
 
+drop table if exists auditoria_atendimento CASCADE;
 DROP TABLE IF EXISTS escala CASCADE;
 DROP TABLE IF EXISTS plantao CASCADE;
+DROP TABLE IF EXISTS internacao CASCADE;
 DROP TABLE IF EXISTS procedimento_realizado CASCADE;
 DROP TABLE IF EXISTS procedimento CASCADE;
 DROP TABLE IF EXISTS nivel_risco CASCADE;
+DROP TABLE IF EXISTS unidade CASCADE;
 DROP TABLE IF EXISTS atendimento CASCADE;
 DROP TABLE IF EXISTS alergia CASCADE;
-DROP TABLE IF EXISTS unidade CASCADE;
 DROP TABLE IF EXISTS residente CASCADE;
 DROP TABLE IF EXISTS preceptor CASCADE;
 DROP TABLE IF EXISTS profissional CASCADE;
@@ -112,8 +114,14 @@ CREATE TABLE atendimento(
 	id_paciente INTEGER NOT NULL,
 	id_residente INTEGER NOT NULL,
 	id_preceptor INTEGER NOT NULL,
+    id_unidade INTEGER NOT NULL,
 	data_hora TIMESTAMP NOT NULL,
 	duracao_minutos NUMERIC(4,2) NOT NULL CHECK (duracao_minutos >= 0) CHECK (duracao_minutos < 1000),
+    
+    CONSTRAINT fk_atendimento_unidade
+        FOREIGN KEY (id_unidade)
+        REFERENCES unidade(id_unidade)
+		ON DELETE CASCADE,
 
 	CONSTRAINT fk_atendimento_paciente
         FOREIGN KEY (id_paciente)
@@ -131,17 +139,20 @@ CREATE TABLE atendimento(
         ON DELETE CASCADE
 );
 
+
 CREATE TABLE nivel_risco(
     id_nivel_risco SERIAL PRIMARY KEY,
     nivel VARCHAR(10) UNIQUE NOT NULL CHECK (nivel IN ('BAIXO','MEDIO','ALTO'))
 );
+
 
 CREATE TABLE procedimento(
 	id_procedimento SERIAL PRIMARY KEY NOT NULL,
 	id_nivel_risco INTEGER NOT NULL,
 	codigo VARCHAR(9) NOT NULL DEFAULT 'PROC-0000',
 	nome VARCHAR(50) NOT NULL,
-	tempo_medio_minutos NUMERIC(4,2) NOT NULL CHECK (tempo_medio_minutos >= 0) CHECK (tempo_medio_minutos < 1000),
+    media_tempo_procedimento NUMERIC(4,2) CHECK (media_tempo_procedimento >= 0) CHECK (media_tempo_procedimento < 1000),
+
 
 	CONSTRAINT fk_nivel_risco
         FOREIGN KEY (id_nivel_risco)
@@ -149,11 +160,13 @@ CREATE TABLE procedimento(
         ON DELETE cascade
 );
 
+
 CREATE TABLE procedimento_realizado(
 	id_atendimento INTEGER NOT NULL,
 	id_procedimento INTEGER NOT NULL,
 	quantidade INTEGER NOT NULL,
 	observacao TEXT,
+	data_hora_inicio TIMESTAMP NOT NULL,
 	tempo_real_minutos NUMERIC(4,2) NOT NULL CHECK (tempo_real_minutos >= 0) CHECK(tempo_real_minutos < 1000),
     faturamento_processado BOOLEAN DEFAULT FALSE,
 
@@ -215,6 +228,37 @@ CREATE TABLE escala(
         FOREIGN KEY (id_residente)
         REFERENCES residente(id_residente)
         ON DELETE CASCADE
+);
+
+
+CREATE TABLE internacao (
+    id_internacao SERIAL PRIMARY KEY,
+    id_paciente INTEGER NOT NULL,
+    data_hora_entrada TIMESTAMP NOT NULL,
+    data_hora_saida TIMESTAMP DEFAULT NULL,   -- NULL = ainda internado
+
+
+    CONSTRAINT fk_paciente
+        FOREIGN KEY (id_paciente)
+        REFERENCES paciente(id_paciente) 
+        ON DELETE CASCADE
+);
+
+
+CREATE TABLE auditoria_atendimento(
+    id_auditoria SERIAL PRIMARY KEY,
+    id_atendimento INTEGER NOT NULL,
+    data_hora TIMESTAMP NOT NULL,
+    operacao VARCHAR(10) NOT NULL CHECK (operacao IN ('INSERT', 'UPDATE', 'DELETE')),
+    usuario VARCHAR(50) NOT NULL,
+    dados_novos JSON,
+    dados_antigos JSON,
+    
+    CONSTRAINT fk_atendimento
+        FOREIGN KEY (id_atendimento)
+        REFERENCES atendimento(id_atendimento)
+        ON DELETE CASCADE
+
 );
 
 
