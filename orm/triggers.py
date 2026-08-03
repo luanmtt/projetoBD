@@ -1,10 +1,14 @@
 from datetime import date, datetime
 from decimal import Decimal
 
-from sqlalchemy import event, select, insert, update, func, inspect
-from sqlalchemy.orm import Session
-
-from models import Escala, Plantao, Atendimento, Auditoria_atendimento, ProcedimentoRealizado, Procedimento
+try:
+    from sqlalchemy import event, select, insert, update, func, inspect
+    from sqlalchemy.orm import Session
+    from orm.models import Escala, Plantao, Atendimento, Auditoria_atendimento, ProcedimentoRealizado, Procedimento
+except ImportError:
+    from sqlalchemy import event, select, insert, update, func, inspect
+    from sqlalchemy.orm import Session
+    from models import Escala, Plantao, Atendimento, Auditoria_atendimento, ProcedimentoRealizado, Procedimento
 
 
 # ──────────────────────────────────────────────────────────────────────────────────────────────────
@@ -52,6 +56,8 @@ def _checar_sobreposicao_escala(session, flush_context, instances):
         if plantao_novo is None:
             continue
 
+        print(f"[TRIGGER] trg_check_sobreposicao_escala: verificando residente {escala.id_residente} no plantão {escala.id_plantao}")
+
         condicoes = [
             Escala.id_residente == escala.id_residente,
             Plantao.turno == plantao_novo.turno,
@@ -70,10 +76,13 @@ def _checar_sobreposicao_escala(session, flush_context, instances):
         conflito = session.execute(stmt).first()
 
         if conflito is not None:
+            print(f"[TRIGGER] trg_check_sobreposicao_escala: CONFLITO — residente {escala.id_residente} já escalado em outra unidade")
             raise ValueError(
                 f"Residente {escala.id_residente} já está escalado no dia "
                 f"{plantao_novo.dia_semana} turno {plantao_novo.turno} em outra unidade."
             )
+
+        print(f"[TRIGGER] trg_check_sobreposicao_escala: OK — sem conflito")
 
 
 # ──────────────────────────────────────────────────────────────────────────────────────────────────
@@ -81,6 +90,7 @@ def _checar_sobreposicao_escala(session, flush_context, instances):
 
 def _audita_insercao(mapper, connection, target: Atendimento):
     usuario = connection.execute(select(func.current_user())).scalar()
+    print(f"[TRIGGER] trg_audita_atendimento: INSERT no atendimento {target.id_atendimento} por {usuario}")
     connection.execute(
         insert(Auditoria_atendimento.__table__).values(
             id_atendimento=target.id_atendimento,
@@ -95,6 +105,7 @@ def _audita_insercao(mapper, connection, target: Atendimento):
 
 def _audita_atualizacao(mapper, connection, target: Atendimento):
     usuario = connection.execute(select(func.current_user())).scalar()
+    print(f"[TRIGGER] trg_audita_atendimento: UPDATE no atendimento {target.id_atendimento} por {usuario}")
     connection.execute(
         insert(Auditoria_atendimento.__table__).values(
             id_atendimento=target.id_atendimento,
@@ -109,6 +120,7 @@ def _audita_atualizacao(mapper, connection, target: Atendimento):
 
 def _audita_delecao(mapper, connection, target: Atendimento):
     usuario = connection.execute(select(func.current_user())).scalar()
+    print(f"[TRIGGER] trg_audita_atendimento: DELETE no atendimento {target.id_atendimento} por {usuario}")
     connection.execute(
         insert(Auditoria_atendimento.__table__).values(
             id_atendimento=target.id_atendimento,
@@ -123,13 +135,15 @@ def _audita_delecao(mapper, connection, target: Atendimento):
 
 event.listen(Atendimento, "after_insert", _audita_insercao)
 event.listen(Atendimento, "after_update", _audita_atualizacao)
-event.listen(Atendimento, "after_delete", _audita_delecao)
+event.listen(Atendimento, "before_delete", _audita_delecao)
 
 
 # ──────────────────────────────────────────────────────────────────────────────────────────────────
 # trg_atualiza_media_procedimentos
 
 def _atualiza_media_procedimento(mapper, connection, target: ProcedimentoRealizado):
+    print(f"[TRIGGER] trg_atualiza_media_procedimentos: atualizando média do procedimento {target.id_procedimento}")
+
     tabela_pr = ProcedimentoRealizado.__table__
 
     nova_media = connection.execute(
@@ -142,6 +156,8 @@ def _atualiza_media_procedimento(mapper, connection, target: ProcedimentoRealiza
         .where(Procedimento.__table__.c.id_procedimento == target.id_procedimento)
         .values(media_tempo_procedimento=nova_media)
     )
+
+    print(f"[TRIGGER] trg_atualiza_media_procedimentos: nova média = {nova_media}")
 
 
 event.listen(ProcedimentoRealizado, "after_insert", _atualiza_media_procedimento)
