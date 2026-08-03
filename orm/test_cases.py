@@ -1,16 +1,22 @@
 from datetime import date, datetime
 from decimal import Decimal
-from database import SessionLocal, engine, Base
-from models import (
-    Paciente, Preceptor, Residente, Unidade, Atendimento, 
-    NivelRisco, Procedimento, ProcedimentoRealizado, Alergia,
-    Plantao, Escala, Internacao, Auditoria_atendimento  # Novas classes importadas
-)
+
+try:
+    from orm.database import SessionLocal, engine, Base
+    from orm.models import (
+        Paciente, Preceptor, Residente, Unidade, Atendimento, 
+        NivelRisco, Procedimento, ProcedimentoRealizado, Alergia,
+        Plantao, Escala, Internacao, Auditoria_atendimento
+    )
+except ImportError:
+    from database import SessionLocal, engine, Base
+    from models import (
+        Paciente, Preceptor, Residente, Unidade, Atendimento, 
+        NivelRisco, Procedimento, ProcedimentoRealizado, Alergia,
+        Plantao, Escala, Internacao, Auditoria_atendimento
+    )
 
 def popular_banco():
-    Base.metadata.drop_all(bind=engine)
-    Base.metadata.create_all(bind=engine)
-    
     with SessionLocal() as session:
         if session.query(Paciente).first():
             print("O banco já possui dados populados.")
@@ -187,7 +193,7 @@ def popular_banco():
         # 10. Plantões
         plantoes = [
             Plantao(id_plantao=1, id_preceptor=6, id_unidade=1, dia_semana=date(2026, 6, 1), turno='manhã'),
-            Plantao(id_plantao=2, id_preceptor=7, id_unidade=2, dia_semana=date(2026, 6, 1), turno='tarde'),
+            Plantao(id_plantao=2, id_preceptor=7, id_unidade=2, dia_semana=date(2026, 6, 1), turno='manhã'),
             Plantao(id_plantao=3, id_preceptor=8, id_unidade=3, dia_semana=date(2026, 6, 2), turno='noite'),
             Plantao(id_plantao=4, id_preceptor=9, id_unidade=1, dia_semana=date(2026, 6, 3), turno='manhã'),
             Plantao(id_plantao=5, id_preceptor=10, id_unidade=2, dia_semana=date(2026, 6, 3), turno='tarde'),
