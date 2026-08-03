@@ -21,107 +21,47 @@ O projeto é dividido em duas etapas:
 ---
 ## Instalação e Execução
 
-### 1. Windows
+1. Instale as dependências necessárias:
 
-1. Acesse a página de download do PostgreSQL e clique em "Download the installer" (mantido pela EnterpriseDB).
-2. Baixe a versão mais recente para Windows x86-64.
-3. Execute o instalador baixado.
-4. Siga o assistente de instalação:
-   * **Componentes:** Deixe marcados o PostgreSQL Server, pgAdmin 4 (interface gráfica) e Command Line Tools.
-   * **Senha:** Ele pedirá para criar uma senha para o superusuário padrão (chamado `postgres`). Não esqueça essa senha.
-   * **Porta:** Deixe a porta padrão (`5432`).
-
-**Como rodar e acessar:**
-
-O PostgreSQL já estará rodando como um serviço do Windows em segundo plano.
-
-* **Via Interface Gráfica:** Abra o Menu Iniciar, procure por `pgAdmin 4`, abra o programa, digite a senha que você criou e conecte-se ao seu servidor local.
-* **Via Terminal:** Abra o Menu Iniciar, procure por `SQL Shell (psql)`. Pressione "Enter" para aceitar os valores padrão até ele pedir a sua senha. Digite a senha (ela não aparecerá na tela) e dê "Enter". Siga para o passo de criação do banco descrito na seção do Linux (Passos 4 a 6).
-
-### 2. Linux (Debian/Ubuntu)
-
-1. Instalar o PostgreSQL para o seu ambiente:
-   ```bash
-   sudo apt install postgresql postgresql-contrib 
-   ```
-
-2. Ativar o serviço do PostgreSQL:
-   ```bash
-   sudo systemctl start postgresql
-   sudo systemctl enable postgresql
-   ```
-
-3. Abrir o terminal do banco de dados:
-   ```bash
-   sudo psql -U postgres
-   ```
-
-4. Criar o banco de dados:
-   ```sql
-   DROP DATABASE IF EXISTS hospitalbd;
-   CREATE DATABASE hospitalbd;
-   ```
-
-5. Conectar no banco criado:
-   ```sql
-   \c hospitalbd
-   ```
-
-6. Rodar o esquema (tabelas):
-   ```sql
-   \i sql/schema.sql
-   ```
-
-7. Popular com dados de teste:
-   ```sql
-   \i sql/test_cases.sql 
-   ```
-
-8. Usar das consultas/operações presentes em `sql/CRUD.sql` e `sql/analytics.sql`.
-
-### 3. macOS
-
-**Como instalar:**
-
-A maneira mais recomendada e prática no macOS é utilizando o Homebrew (gerenciador de pacotes). Abra o terminal e execute:
 ```bash
-brew install postgresql
+pip install -r requirements.txt
 ```
 
-1. Inicie o serviço do PostgreSQL em segundo plano:
-   ```bash
-   brew services start postgresql
-   ```
+2. Edite o arquivo `.env` com os dados de conexão do seu banco PostgreSQL:
 
-2. Abra o terminal interativo do banco de dados:
-   ```bash
-   psql postgres
-   ```
+```env
+DB_USER=postgres
+DB_PASSWORD=sua_senha
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=nome_do_banco
+```
 
-3. Criar o banco de dados:
-   ```sql
-   DROP DATABASE IF EXISTS hospitalbd;
-   CREATE DATABASE hospitalbd;
-   ```
+3. Certifique-se de que o PostgreSQL esteja em execução e que o banco de dados já tenha sido criado.
 
-4. Conectar no banco criado:
-   ```sql
-   \c hospitalbd
-   ```
+4. Na pasta principal do projeto, execute:
 
-5. Rodar o esquema (tabelas):
-   ```sql
-   \i sql/schema.sql
-   ```
+```bash
+python run.py
+```
 
-6. Popular com dados de teste:
-   ```sql
-   \i sql/test_cases.sql 
-   ```
+No Windows, também pode ser utilizado:
 
-7. Usar das consultas/operações presentes em `sql/CRUD.sql` e `sql/analytics.sql`.
+```bash
+py run.py
+```
 
----
+5. Com o servidor iniciado, acesse no navegador:
+
+```text
+http://127.0.0.1:5000
+```
+
+Para encerrar a aplicação, pressione:
+
+```text
+Ctrl + C
+```
 
 ## Estrutura do Repositório
 
